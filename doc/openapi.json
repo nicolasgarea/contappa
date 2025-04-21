@@ -52,24 +52,23 @@
                     }
                 }
             },
-            "get":{
+            "get": {
                 "summary": "Get all tables",
                 "responses": {
-                    "200":{
+                    "200": {
                         "description": "Ok",
                         "content": {
-                            "application/json" :{
-                                "schema" :{
+                            "application/json": {
+                                "schema": {
                                     "type": "array",
-                                    "items":{
-                                       "$ref" : "#/components/schemas/Table" 
+                                    "items": {
+                                        "$ref": "#/components/schemas/Table"
                                     }
                                 }
                             }
                         }
                     }
                 }
-                
             }
         },
         "/tables/{tableId}": {
@@ -138,17 +137,17 @@
                     }
                 }
             },
-            "delete":{
+            "delete": {
                 "summary": "Delete a specific table",
-                "responses":{
+                "responses": {
                     "204": {
-                        "description" : "Deleted succesfully"
+                        "description": "Deleted succesfully"
                     },
-                    "404" :{
+                    "404": {
                         "description": "Not found",
                         "content": {
-                            "application/json" :{
-                                "schema":{
+                            "application/json": {
+                                "schema": {
                                     "$ref": "#/components/schemas/Error"
                                 }
                             }

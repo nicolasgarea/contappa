@@ -666,7 +666,15 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Product"
+                            "type": "object",
+                            "properties": {
+                                "productId": {
+                                    "type": "string"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                }
+                            }
                         }
                     },
                     "tableId": {

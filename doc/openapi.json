@@ -1,0 +1,238 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Contappa API",
+        "version": "1.0.0",
+        "description": "Rest API for managing the Contappa service"
+    },
+    "paths": {
+        "/tables": {
+            "post": {
+                "summary": "Create new table",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateTableRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Table created succesfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Table"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get":{
+                "summary": "Get all tables",
+                "responses": {
+                    "200":{
+                        "description": "Ok",
+                        "content": {
+                            "application/json" :{
+                                "schema" :{
+                                    "type": "array",
+                                    "items":{
+                                       "$ref" : "#/components/schemas/Table" 
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        },
+        "/tables/{tableId}": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/tableId"
+                }
+            ],
+            "get": {
+                "summary": "Fetch the table information for a given ID",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Table"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Unexpected Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update details of a specific table",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTableRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Table"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Delete a specific table",
+                "responses":{
+                    "204": {
+                        "description" : "Deleted succesfully"
+                    },
+                    "404" :{
+                        "description": "Not found",
+                        "content": {
+                            "application/json" :{
+                                "schema":{
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "tableId": {
+                "name": "tableId",
+                "in": "path",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "ProductId": {
+                "type": "string"
+            },
+            "TableId": {
+                "type": "string"
+            },
+            "CreateTableRequest": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "type": "integer"
+                    },
+                    "productList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductId"
+                        }
+                    }
+                },
+                "required": [
+                    "number",
+                    "productList"
+                ]
+            },
+            "Table": {
+                "type": "object",
+                "properties": {
+                    "number": {
+                        "type": "integer"
+                    },
+                    "productList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductId"
+                        }
+                    }
+                }
+            },
+            "UpdateTableRequest": {
+                "type": "object",
+                "properties": {
+                    "productList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductId"
+                        }
+                    }
+                },
+                "required": [
+                    "productList"
+                ]
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+Project contappa-db {
+  database_type: 'PostgreSQL'
+  Note: 'POS system'
+}
+
+Table products{
+    id uuid[primary key]
+    name varchar(100)
+    price decimal
+}
+
+Table tables{
+    id uuid[primary key]
+    number int
+}
+
+Table bills{
+    id uuid[primary key]
+    amount decimal
+    date date
+    table_id uuid [ref: > tables.id]
+}
+
+Table table_products{
+    table_id uuid [ref: > tables.id]
+    product_id uuid [ref: > products.id]
+    quantity int
+    primary key(table_id, product_id)
+}

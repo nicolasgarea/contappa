@@ -705,7 +705,21 @@
                     "productList": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductId"
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "quantity":{
+                                    "type": "integer"
+                                }
+                            }
                         }
                     }
                 }

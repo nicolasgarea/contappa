@@ -3,18 +3,18 @@ Project contappa-db {
   Note: 'POS system'
 }
 
-Table products{
+Table products {
     id uuid[primary key]
     name varchar(100)
     price decimal
 }
 
-Table tables{
+Table tables {
     id uuid[primary key]
     number int
 }
 
-Table bills{
+Table bills {
     id uuid[primary key]
     amount decimal
     date date

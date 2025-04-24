@@ -21,9 +21,10 @@ Table bills{
     table_id uuid [ref: > tables.id]
 }
 
-Table table_products{
-    table_id uuid [ref: > tables.id]
+Table bill_items {
+    bill_id uuid [ref: > bills.id]
     product_id uuid [ref: > products.id]
     quantity int
-    primary key(table_id, product_id)
+    unit_price decimal
+    primary key(bill_id, product_id)
 }

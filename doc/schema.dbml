@@ -26,5 +26,8 @@ Table bill_items {
     product_id uuid [ref: > products.id]
     quantity int
     unit_price decimal
+    created_at timestamp 
+    updated_at timestamp
+    status varchar(50)
     primary key(bill_id, product_id)
 }

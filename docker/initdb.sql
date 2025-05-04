@@ -11,9 +11,12 @@ CREATE TABLE tables (
 
 CREATE TABLE bills (
     id UUID PRIMARY KEY,
+    table_id UUID REFERENCES tables(id),
     amount DECIMAL,
     date DATE,
-    table_id UUID REFERENCES tables(id)
+    status VARCHAR(50),
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 CREATE TABLE bill_items (
@@ -23,6 +26,5 @@ CREATE TABLE bill_items (
     unit_price DECIMAL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
-    status VARCHAR(50),
     PRIMARY KEY(bill_id, product_id)
 );

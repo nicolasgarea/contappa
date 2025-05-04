@@ -1,0 +1,30 @@
+Table products {
+    id uuid [pk]
+    name varchar
+    price numeric
+}
+
+Table tables {
+    id uuid [pk]
+    number int
+}
+
+Table bills{
+    id uuid[primary key]
+    table_id uuid [ref: > tables.id]
+    amount decimal
+    date date
+    status varchar
+    created_at datetime 
+    updated_at datetime
+}
+
+Table bill_products {
+    bill_id uuid [ref: > bills.id]
+    product_id uuid [ref: > products.id]
+    quantity int
+    unit_price numeric
+    created_at datetime 
+    updated_at datetime
+    primary key(bill_id, product_id)
+}

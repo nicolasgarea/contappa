@@ -1,22 +1,17 @@
-Project contappa-db {
-  database_type: 'PostgreSQL'
-  Note: 'POS system'
-}
-
 Table products {
-    id uuid[primary key]
-    name varchar(100)
-    price decimal
+    id uuid [pk]
+    name varchar
+    price numeric
 }
 
 Table tables {
-    id uuid[primary key]
+    id uuid [pk]
     number int
 }
 
 Table bills {
-    id uuid[primary key]
-    amount decimal
+    id uuid [pk]
+    amount numeric
     date date
     table_id uuid [ref: > tables.id]
 }
@@ -25,9 +20,9 @@ Table bill_items {
     bill_id uuid [ref: > bills.id]
     product_id uuid [ref: > products.id]
     quantity int
-    unit_price decimal
-    created_at timestamp 
-    updated_at timestamp
-    status varchar(50)
+    unit_price numeric
+    created_at datetime 
+    updated_at datetime
+    status varchar
     primary key(bill_id, product_id)
 }

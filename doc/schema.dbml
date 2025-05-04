@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Table products {
     id uuid [pk]
     name varchar
@@ -12,6 +13,27 @@ Table tables {
 Table bills {
     id uuid [pk]
     amount numeric
+=======
+Project contappa-db {
+  database_type: 'PostgreSQL'
+  Note: 'POS system'
+}
+
+Table products{
+    id uuid[primary key]
+    name varchar(100)
+    price decimal
+}
+
+Table tables{
+    id uuid[primary key]
+    number int
+}
+
+Table bills{
+    id uuid[primary key]
+    amount decimal
+>>>>>>> parent of c2ab296 (docs(#4): fix indentation in DBML schema)
     date date
     table_id uuid [ref: > tables.id]
 }

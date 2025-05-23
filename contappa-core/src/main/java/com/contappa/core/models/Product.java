@@ -1,4 +1,4 @@
-package com.contappa.core.model;
+package com.contappa.core.models;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;

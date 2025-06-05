@@ -5,11 +5,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CreateBillRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
-    private String tableId;
+    private UUID tableId;
     private List<ProductQuantity> products;
 
     public BigDecimal getAmount() {
@@ -28,11 +29,11 @@ public class CreateBillRequestDTO {
         this.date = date;
     }
 
-    public String getTableId() {
+    public UUID getTableId() {
         return tableId;
     }
 
-    public void setTableId(String tableId) {
+    public void setTableId(UUID tableId) {
         this.tableId = tableId;
     }
 

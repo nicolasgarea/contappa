@@ -1,17 +1,18 @@
 package com.contappa.core.dto;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class ProductDTO {
-    private String id;
+    private UUID id;
     private String name;
     private BigDecimal price;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

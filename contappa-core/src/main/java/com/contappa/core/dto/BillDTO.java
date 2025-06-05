@@ -3,19 +3,20 @@ package com.contappa.core.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 public class BillDTO {
 
-    private String id;
+    private UUID id;
     private BigDecimal amount;
     private LocalDate date;
     private List<ProductQuantity> products;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

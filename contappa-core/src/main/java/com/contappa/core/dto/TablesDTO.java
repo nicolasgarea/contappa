@@ -2,9 +2,12 @@ package com.contappa.core.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public class TablesDTO {
     private int number;
+    private UUID id;
+
     private List<ProductQuantity> products;
 
     public List<ProductQuantity> getProducts() {
@@ -14,6 +17,8 @@ public class TablesDTO {
     public void setProducts(List<ProductQuantity> products) {
         this.products = products;
     }
+
+    public UUID getId(){ return id; }
     public int getNumber() {
         return number;
     }

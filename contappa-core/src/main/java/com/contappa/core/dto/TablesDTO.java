@@ -21,7 +21,7 @@ public class TablesDTO {
     public UUID getId(){ return id; }
 
     public void setId(UUID id){this.id = id;}
-    
+
     public int getNumber() {
         return number;
     }

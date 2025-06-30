@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +36,9 @@ public class Bill {
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
     private Tables table;
+
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BillProduct> billProducts = new ArrayList<>();
 
 
     public Bill(){
@@ -104,4 +109,9 @@ public class Bill {
     public void setTable(Tables table) {
         this.table = table;
     }
+
+    public List<BillProduct> getBillProducts() { return billProducts; }
+
+    public void setBillProducts(List<BillProduct> billProducts) { this.billProducts = billProducts; }
 }
+    

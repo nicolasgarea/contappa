@@ -114,4 +114,4 @@ public class Bill {
 
     public void setBillProducts(List<BillProduct> billProducts) { this.billProducts = billProducts; }
 }
-    
+

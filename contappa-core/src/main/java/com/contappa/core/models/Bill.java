@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,14 +35,17 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
-    private Table table;
+    private Tables table;
+
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BillProduct> billProducts = new ArrayList<>();
 
 
     public Bill(){
 
     }
 
-    public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Table table) {
+    public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Tables table) {
         this.amount = amount;
         this.date = date;
         this.status = status;
@@ -97,11 +102,16 @@ public class Bill {
         this.updatedAt = updatedAt;
     }
 
-    public Table getTable() {
+    public Tables getTable() {
         return table;
     }
 
-    public void setTable(Table table) {
+    public void setTable(Tables table) {
         this.table = table;
     }
+
+    public List<BillProduct> getBillProducts() { return billProducts; }
+
+    public void setBillProducts(List<BillProduct> billProducts) { this.billProducts = billProducts; }
 }
+

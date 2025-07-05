@@ -33,14 +33,14 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
-    private Table table;
+    private Tables table;
 
 
     public Bill(){
 
     }
 
-    public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Table table) {
+    public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Tables table) {
         this.amount = amount;
         this.date = date;
         this.status = status;
@@ -97,11 +97,11 @@ public class Bill {
         this.updatedAt = updatedAt;
     }
 
-    public Table getTable() {
+    public Tables getTable() {
         return table;
     }
 
-    public void setTable(Table table) {
+    public void setTable(Tables table) {
         this.table = table;
     }
 }

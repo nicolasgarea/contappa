@@ -46,14 +46,14 @@ public class CreateBillRequestDTO {
     }
 
     public static class ProductQuantity {
-        private String productId;
+        private UUID productId;
         private int quantity;
 
-        public String getProductId() {
+        public UUID getProductId() {
             return productId;
         }
 
-        public void setProductId(String productId) {
+        public void setProductId(UUID productId) {
             this.productId = productId;
         }
 

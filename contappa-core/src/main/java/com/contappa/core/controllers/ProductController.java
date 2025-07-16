@@ -5,6 +5,8 @@ import com.contappa.core.dto.TablesDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.models.Product;
 import com.contappa.core.services.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +28,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO){
         ProductDTO product = productService.create(productDTO);
-        URI location = URI.create("/products/" + product.getId());
-        return ResponseEntity.created(location).body(product);
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

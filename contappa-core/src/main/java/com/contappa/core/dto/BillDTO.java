@@ -11,6 +11,15 @@ public class BillDTO {
     private BigDecimal amount;
     private LocalDate date;
     private List<ProductQuantity> products;
+    private UUID tableId;
+
+    public UUID getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(UUID tableId) {
+        this.tableId = tableId;
+    }
 
     public UUID getId() {
         return id;

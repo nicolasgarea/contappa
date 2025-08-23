@@ -374,7 +374,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CreateTableRequest"
+                                "$ref": "#/components/schemas/Table"
                             }
                         }
                     }
@@ -489,7 +489,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UpdateTableRequest"
+                                "$ref": "#/components/schemas/Table"
                             }
                         }
                     }
@@ -617,39 +617,6 @@
                     "products"
                 ]
             },
-            "CreateTableRequest": {
-                "type": "object",
-                "properties": {
-                    "number": {
-                        "type": "integer"
-                    },
-                    "productList": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductId"
-                        }
-                    }
-                },
-                "required": [
-                    "number",
-                    "productList"
-                ]
-            },
-            "CreateProductRequest": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "price": {
-                        "type": "number"
-                    }
-                },
-                "required": [
-                    "name",
-                    "price"
-                ]
-            },
             "Bill": {
                 "type": "object",
                 "properties": {
@@ -723,20 +690,6 @@
                         }
                     }
                 }
-            },
-            "UpdateTableRequest": {
-                "type": "object",
-                "properties": {
-                    "productList": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductId"
-                        }
-                    }
-                },
-                "required": [
-                    "productList"
-                ]
             },
             "Error": {
                 "type": "object",

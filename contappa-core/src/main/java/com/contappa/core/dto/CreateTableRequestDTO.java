@@ -4,7 +4,6 @@ import java.util.List;
 
 public class CreateTableRequestDTO {
     private int number;
-    private List<String> productList;
 
     public int getNumber() {
         return number;

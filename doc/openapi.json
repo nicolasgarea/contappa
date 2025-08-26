@@ -81,7 +81,7 @@
                 }
             }
         },
-        "/bill/{billId}": {
+        "/bills/{billId}": {
             "parameters": [
                 {
                     "$ref": "#/components/parameters/billId"
@@ -124,6 +124,16 @@
             },
             "patch": {
                 "summary": "Update details of a specific bill",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateBillRequest"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Ok",
@@ -699,44 +709,50 @@
             "Table": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "string"
+                    },
                     "number": {
                         "type": "integer"
-                    },
-                    "productList": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "id": {
-                                    "type": "string"
-                                },
-                                "name": {
-                                    "type": "string"
-                                },
-                                "price": {
-                                    "type": "number"
-                                },
-                                "quantity":{
-                                    "type": "integer"
-                                }
-                            }
-                        }
                     }
                 }
             },
             "UpdateTableRequest": {
                 "type": "object",
                 "properties": {
-                    "productList": {
+                    "number": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "UpdateBillRequest": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductId"
+                            "type": "object",
+                            "properties": {
+                                "productId": {
+                                    "type": "string"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                }
+                            }
                         }
+                    },
+                    "tableId": {
+                        "type": "string"
                     }
-                },
-                "required": [
-                    "productList"
-                ]
+                }
             },
             "Error": {
                 "type": "object",

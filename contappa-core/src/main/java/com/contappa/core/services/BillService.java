@@ -68,11 +68,33 @@ public class BillService {
     }
 
     public BillDTO update(UUID id, BillDTO billDTO){
-        Bill existingBill = billRepository.findById(id).orElseThrow(() -> new BillNotFoundException("Bill not found."));
-        Bill updatedBill = billMapper.toBill(billDTO);
-        updatedBill.setId(id);
-        Bill savedBill = billRepository.save(updatedBill);
-        return billMapper.toBillDTO(savedBill);
+        Bill existingBill = billRepository.findById(id)
+            .orElseThrow(() -> new BillNotFoundException("Bill not found."));
+
+        existingBill.setAmount(billDTO.getAmount());
+        existingBill.setDate(billDTO.getDate());
+
+        if (billDTO.getTableId() != null) {
+            Tables table = tablesRepository.findById(billDTO.getTableId())
+                .orElseThrow(() -> new TableNotFoundException("Table not found."));
+            existingBill.setTable(table);
+        }
+
+        if (billDTO.getProducts() != null) {
+            existingBill.getBillProducts().clear();
+            for (BillDTO.ProductQuantity pq : billDTO.getProducts()) {
+                Product product = productRepository.findById(UUID.fromString(pq.getProductId()))
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found."));
+                BillProduct bp = new BillProduct();
+                bp.setBill(existingBill);
+                bp.setProduct(product);
+                bp.setQuantity(pq.getQuantity());
+                bp.setUnitPrice(product.getPrice());
+                existingBill.getBillProducts().add(bp);
+            }
+        }
+
+        return billMapper.toBillDTO(billRepository.save(existingBill));
     }
 
     public void delete(UUID id){

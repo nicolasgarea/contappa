@@ -3,6 +3,8 @@ openapi: 3.0.0
 info:
   title: Contappa API
   version: 1.0.0
+  license:
+    name: MIT
   description: Rest API for managing the Contappa service
 servers:
   - url: http://localhost:8080

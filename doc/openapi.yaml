@@ -388,13 +388,8 @@ components:
       properties:
         number:
           type: integer
-        productList:
-          type: array
-          items:
-            "$ref": "#/components/schemas/ProductId"
       required:
       - number
-      - productList
     CreateProductRequest:
       type: object
       properties:

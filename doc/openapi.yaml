@@ -216,6 +216,12 @@ paths:
     patch:
       summary: Update details of a specific product
       operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UpdateProductRequest"
       responses:
         '200':
           description: Ok
@@ -498,6 +504,13 @@ components:
       properties:
         number:
           type: integer
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
     UpdateBillRequest:
       type: object
       properties:

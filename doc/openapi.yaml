@@ -52,6 +52,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Bill"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
@@ -170,6 +176,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Product"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
@@ -288,6 +300,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Table"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:

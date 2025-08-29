@@ -423,7 +423,7 @@ components:
           type: string
           format: date
         tableId:
-          type: string
+          "$ref": "#/components/schemas/TableId"
           description: ID of the table associated with this bill
         products:
           type: array
@@ -431,7 +431,7 @@ components:
             type: object
             properties:
               productId:
-                type: string
+                "$ref": "#/components/schemas/ProductId"
               quantity:
                 type: integer
       required:

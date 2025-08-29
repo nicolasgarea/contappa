@@ -210,6 +210,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Product"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         '404':
           description: Not found
           content:
@@ -328,6 +334,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Table"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:

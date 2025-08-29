@@ -1,6 +1,8 @@
 package com.contappa.core.mappers;
 
+import com.contappa.core.dto.CreateProductRequestDTO;
 import com.contappa.core.dto.ProductDTO;
+import com.contappa.core.dto.UpdateProductRequestDTO;
 import com.contappa.core.models.Product;
 import org.mapstruct.Mapper;
 
@@ -10,4 +12,8 @@ public interface ProductMapper {
     ProductDTO toProductDTO(Product product);
 
     Product toProduct(ProductDTO productDTO);
+
+    Product toProduct(CreateProductRequestDTO createProductDTO);
+
+    Product toProduct(UpdateProductRequestDTO updateProductDTO);
 }

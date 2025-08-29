@@ -13,6 +13,7 @@ paths:
   "/bills":
     post:
       summary: Create new bill
+      operationId: createBill
       requestBody:
         required: true
         content:
@@ -40,6 +41,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     get:
       summary: Get all bills
+      operationId: getAllBills
       responses:
         '200':
           description: Ok
@@ -60,6 +62,7 @@ paths:
     - "$ref": "#/components/parameters/billId"
     get:
       summary: Fetch the bill information for a given ID
+      operationId: getBillById
       responses:
         '200':
           description: Ok
@@ -81,6 +84,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     patch:
       summary: Update details of a specific bill
+      operationId: updateBill
       requestBody:
         required: true
         content:
@@ -108,6 +112,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     delete:
       summary: Delete a specific product
+      operationId: deleteBill
       responses:
         '204':
           description: Deleted succesfully
@@ -126,6 +131,7 @@ paths:
   "/products":
     post:
       summary: Create new product
+      operationId: createProduct
       requestBody:
         required: true
         content:
@@ -153,6 +159,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     get:
       summary: Get all products
+      operationId: getAllProducts
       responses:
         '200':
           description: Ok
@@ -173,6 +180,7 @@ paths:
     - "$ref": "#/components/parameters/productId"
     get:
       summary: Fetch the product information for a given ID
+      operationId: getProductById
       responses:
         '200':
           description: Ok
@@ -194,6 +202,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     patch:
       summary: Update details of a specific product
+      operationId: updateProduct
       responses:
         '200':
           description: Ok
@@ -215,6 +224,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     delete:
       summary: Delete a specific product
+      operationId: deleteProduct
       responses:
         '204':
           description: Deleted succesfully
@@ -233,6 +243,7 @@ paths:
   "/tables":
     post:
       summary: Create new table
+      operationId: createTable
       requestBody:
         required: true
         content:
@@ -260,6 +271,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     get:
       summary: Get all tables
+      operationId: getAllTables
       responses:
         '200':
           description: Ok
@@ -280,6 +292,7 @@ paths:
     - "$ref": "#/components/parameters/tableId"
     get:
       summary: Fetch the table information for a given ID
+      operationId: getTableById
       responses:
         '200':
           description: Ok
@@ -301,6 +314,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     patch:
       summary: Update details of a specific table
+      operationId: updateTable
       requestBody:
         required: true
         content:
@@ -322,6 +336,7 @@ paths:
                 "$ref": "#/components/schemas/Error"
     delete:
       summary: Delete a specific table
+      operationId: deleteTable
       responses:
         '204':
           description: Deleted succesfully

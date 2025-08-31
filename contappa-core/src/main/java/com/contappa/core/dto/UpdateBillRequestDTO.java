@@ -10,7 +10,7 @@ public class UpdateBillRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
     private UUID tableId;
-    private List<CreateBillRequestDTO.ProductQuantity> products;
+    private List<UpdateBillRequestDTO.ProductQuantity> products;
 
     public BigDecimal getAmount() {
         return amount;
@@ -36,11 +36,11 @@ public class UpdateBillRequestDTO {
         this.tableId = tableId;
     }
 
-    public List<CreateBillRequestDTO.ProductQuantity> getProducts() {
+    public List<UpdateBillRequestDTO.ProductQuantity> getProducts() {
         return products;
     }
 
-    public void setProducts(List<CreateBillRequestDTO.ProductQuantity> products) {
+    public void setProducts(List<UpdateBillRequestDTO.ProductQuantity> products) {
         this.products = products;
     }
 

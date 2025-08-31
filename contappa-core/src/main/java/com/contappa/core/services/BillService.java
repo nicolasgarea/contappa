@@ -84,7 +84,7 @@ public class BillService {
         if (billDTO.getProducts() != null) {
             existingBill.getBillProducts().clear();
             for (UpdateBillRequestDTO.ProductQuantity pq : billDTO.getProducts()) {
-                Product product = productRepository.findById(UUID.fromString(pq.getProductId()))
+                Product product = productRepository.findById(pq.getProductId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found."));
                 BillProduct bp = new BillProduct();
                 bp.setBill(existingBill);

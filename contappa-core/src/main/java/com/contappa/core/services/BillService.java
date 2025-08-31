@@ -3,6 +3,7 @@ package com.contappa.core.services;
 
 import com.contappa.core.dto.BillDTO;
 import com.contappa.core.dto.CreateBillRequestDTO;
+import com.contappa.core.dto.UpdateBillRequestDTO;
 import com.contappa.core.exceptions.BillNotFoundException;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.exceptions.TableNotFoundException;
@@ -67,7 +68,7 @@ public class BillService {
         return billMapper.toBillDTO(bill);
     }
 
-    public BillDTO update(UUID id, BillDTO billDTO){
+    public BillDTO update(UUID id, UpdateBillRequestDTO billDTO){
         Bill existingBill = billRepository.findById(id)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
 
@@ -82,7 +83,7 @@ public class BillService {
 
         if (billDTO.getProducts() != null) {
             existingBill.getBillProducts().clear();
-            for (BillDTO.ProductQuantity pq : billDTO.getProducts()) {
+            for (UpdateBillRequestDTO.ProductQuantity pq : billDTO.getProducts()) {
                 Product product = productRepository.findById(UUID.fromString(pq.getProductId()))
                     .orElseThrow(() -> new ProductNotFoundException("Product not found."));
                 BillProduct bp = new BillProduct();

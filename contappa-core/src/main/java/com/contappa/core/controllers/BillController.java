@@ -2,6 +2,7 @@ package com.contappa.core.controllers;
 
 import com.contappa.core.dto.BillDTO;
 import com.contappa.core.dto.CreateBillRequestDTO;
+import com.contappa.core.dto.UpdateBillRequestDTO;
 import com.contappa.core.services.BillService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class BillController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BillDTO> updateBill(@PathVariable UUID id, @RequestBody BillDTO billDTO){
+    public ResponseEntity<BillDTO> updateBill(@PathVariable UUID id, @RequestBody UpdateBillRequestDTO billDTO){
         BillDTO updated = billService.update(id, billDTO);
         return ResponseEntity.ok(updated);
     }

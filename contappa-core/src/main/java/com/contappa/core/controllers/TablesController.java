@@ -39,7 +39,7 @@ public class TablesController {
         return ResponseEntity.ok(tables);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<TablesDTO> updateTable(@PathVariable UUID id, @RequestBody UpdateTableRequestDTO dto) {
         TablesDTO updated = tablesService.update(id, dto);
         return ResponseEntity.ok(updated);

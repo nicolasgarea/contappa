@@ -43,7 +43,7 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductDTO productDTO){
         ProductDTO updated = productService.update(id, productDTO);
         return ResponseEntity.ok(updated);

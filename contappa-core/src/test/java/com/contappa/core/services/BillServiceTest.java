@@ -2,6 +2,7 @@ package com.contappa.core.services;
 
 import com.contappa.core.dto.BillDTO;
 import com.contappa.core.dto.CreateBillRequestDTO;
+import com.contappa.core.dto.UpdateBillRequestDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.exceptions.TableNotFoundException;
 import com.contappa.core.mappers.BillMapper;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +89,7 @@ public class BillServiceTest {
     }
 
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
         BillRepository billRepository = Mockito.mock(BillRepository.class);
         BillMapper billMapper = Mockito.mock(BillMapper.class);
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
@@ -96,18 +98,25 @@ public class BillServiceTest {
 
         UUID id = UUID.randomUUID();
         Bill bill = new Bill();
-        BillDTO billDTO = new BillDTO();
-        Mockito.when(billRepository.save(bill)).thenReturn(bill);
-        Mockito.when(billRepository.findById(id)).thenReturn(Optional.of(bill));
-        Mockito.when(billMapper.toBill(billDTO)).thenReturn(bill);
-
         bill.setId(id);
 
-        Bill resultBill = billRepository.save(bill);
+        UpdateBillRequestDTO updateDTO = new UpdateBillRequestDTO();
+        updateDTO.setAmount(BigDecimal.valueOf(100));
+        updateDTO.setDate(LocalDate.now());
 
-        BillDTO expectedDTO = billMapper.toBillDTO(resultBill);
+        UpdateBillRequestDTO.ProductQuantity pq = new UpdateBillRequestDTO.ProductQuantity();
+        pq.setProductId(UUID.randomUUID());
+        pq.setQuantity(2);
+        updateDTO.setProducts(List.of(pq));
 
-        BillDTO resultDTO = billService.update(id, billDTO);
+        BillDTO expectedDTO = new BillDTO();
+
+        Mockito.when(billRepository.findById(id)).thenReturn(Optional.of(bill));
+        Mockito.when(billRepository.save(bill)).thenReturn(bill);
+        Mockito.when(productRepository.findById(pq.getProductId())).thenReturn(Optional.of(new Product()));
+        Mockito.when(billMapper.toBillDTO(bill)).thenReturn(expectedDTO);
+
+        BillDTO resultDTO = billService.update(id, updateDTO);
 
         Assertions.assertEquals(expectedDTO, resultDTO);
     }

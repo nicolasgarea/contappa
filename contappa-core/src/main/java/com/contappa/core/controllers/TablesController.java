@@ -1,6 +1,8 @@
 package com.contappa.core.controllers;
 
+import com.contappa.core.dto.CreateTableRequestDTO;
 import com.contappa.core.dto.TablesDTO;
+import com.contappa.core.dto.UpdateTableRequestDTO;
 import com.contappa.core.services.TablesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,7 @@ public class TablesController {
     }
 
     @PostMapping
-    public ResponseEntity<TablesDTO> createTable(@RequestBody TablesDTO dto){
+    public ResponseEntity<TablesDTO> createTable(@RequestBody CreateTableRequestDTO dto){
         TablesDTO created = tablesService.create(dto);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -37,8 +39,8 @@ public class TablesController {
         return ResponseEntity.ok(tables);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TablesDTO> updateTable(@PathVariable UUID id, @RequestBody TablesDTO dto) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<TablesDTO> updateTable(@PathVariable UUID id, @RequestBody UpdateTableRequestDTO dto) {
         TablesDTO updated = tablesService.update(id, dto);
         return ResponseEntity.ok(updated);
     }

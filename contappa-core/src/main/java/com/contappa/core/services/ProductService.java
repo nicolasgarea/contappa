@@ -1,6 +1,8 @@
 package com.contappa.core.services;
 
+import com.contappa.core.dto.CreateProductRequestDTO;
 import com.contappa.core.dto.ProductDTO;
+import com.contappa.core.dto.UpdateProductRequestDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public class ProductService {
         this.productMapper = productMapper;
     }
 
-    public ProductDTO create(ProductDTO productDTO){
+    public ProductDTO create(CreateProductRequestDTO productDTO){
         Product product = productMapper.toProduct(productDTO);
         Product savedProduct = productRepository.save(product);
         return productMapper.toProductDTO(savedProduct);
@@ -39,7 +40,7 @@ public class ProductService {
         return productRepository.findAll().stream().map(productMapper::toProductDTO).collect(Collectors.toList());
     }
 
-    public ProductDTO update(UUID id, ProductDTO productDTO) {
+    public ProductDTO update(UUID id, UpdateProductRequestDTO productDTO) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
         Product updatedProduct = productMapper.toProduct(productDTO);

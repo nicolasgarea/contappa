@@ -3,13 +3,13 @@ package com.contappa.core.dto;
 import java.util.List;
 
 public class UpdateTableRequestDTO {
-    private List<String> productList;
+    private int number;
 
-    public List<String> getProductList() {
-        return productList;
+    public int getNumber() {
+        return number;
     }
 
-    public void setProductList(List<String> productList) {
-        this.productList = productList;
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

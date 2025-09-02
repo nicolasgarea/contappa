@@ -1,6 +1,8 @@
 package com.contappa.core.services;
 
+import com.contappa.core.dto.CreateProductRequestDTO;
 import com.contappa.core.dto.ProductDTO;
+import com.contappa.core.dto.UpdateProductRequestDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;
@@ -12,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,16 +28,21 @@ public class ProductServiceTest {
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         ProductService productService = new ProductService(productRepository, productMapper);
-        ProductDTO inputDTO = Mockito.mock(ProductDTO.class);
-        Product product = Mockito.mock(Product.class);
-        Product savedProduct = Mockito.mock(Product.class);
-        ProductDTO outputDTO = Mockito.mock(ProductDTO.class);
 
-        Mockito.when(productMapper.toProduct(inputDTO)).thenReturn(product);
+        CreateProductRequestDTO createDTO = new CreateProductRequestDTO();
+        createDTO.setName("productName");
+        createDTO.setPrice(BigDecimal.valueOf(100));
+
+        Product product = new Product();
+        Product savedProduct = new Product();
+        ProductDTO outputDTO = new ProductDTO();
+
+        Mockito.when(productMapper.toProduct(createDTO)).thenReturn(product);
         Mockito.when(productRepository.save(product)).thenReturn(savedProduct);
         Mockito.when(productMapper.toProductDTO(savedProduct)).thenReturn(outputDTO);
 
-        ProductDTO result = productService.create(inputDTO);
+        ProductDTO result = productService.create(createDTO);
+
         Assertions.assertEquals(outputDTO, result);
     }
 
@@ -86,24 +94,29 @@ public class ProductServiceTest {
         ProductService productService = new ProductService(productRepository, productMapper);
 
         UUID id = UUID.randomUUID();
-        ProductDTO productDTO = new ProductDTO();
+        UpdateProductRequestDTO updateDTO = new UpdateProductRequestDTO();
+        updateDTO.setName("updatedProductName");
+        updateDTO.setPrice(BigDecimal.valueOf(150));
+
         Product existingProduct = new Product();
         existingProduct.setId(id);
+
         Product updatedProduct = new Product();
         updatedProduct.setId(id);
+        updatedProduct.setName(updateDTO.getName());
+        updatedProduct.setPrice(updateDTO.getPrice());
+
         ProductDTO returnedDTO = new ProductDTO();
         returnedDTO.setId(id);
 
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.of(existingProduct));
-        Mockito.when(productMapper.toProduct(productDTO)).thenReturn(updatedProduct);
+        Mockito.when(productMapper.toProduct(updateDTO)).thenReturn(updatedProduct);
         Mockito.when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);
         Mockito.when(productMapper.toProductDTO(updatedProduct)).thenReturn(returnedDTO);
 
-
-        ProductDTO result = productService.update(id, productDTO);
+        ProductDTO result = productService.update(id, updateDTO);
 
         Assertions.assertEquals(id, result.getId());
-
     }
 
     @Test

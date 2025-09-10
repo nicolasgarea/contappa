@@ -135,7 +135,7 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
-    "/bills/{billId}/split":
+  "/bills/{billId}/split":
     post:
       summary: Split a bill into multiple sub-bills
       operationId: splitBill

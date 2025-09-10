@@ -2,6 +2,7 @@ package com.contappa.core.controllers;
 
 import com.contappa.core.dto.BillDTO;
 import com.contappa.core.dto.CreateBillRequestDTO;
+import com.contappa.core.dto.SplitBillRequestDTO;
 import com.contappa.core.dto.UpdateBillRequestDTO;
 import com.contappa.core.services.BillService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class BillController {
     public ResponseEntity<BillDTO> updateBill(@PathVariable UUID id, @RequestBody UpdateBillRequestDTO billDTO){
         BillDTO updated = billService.update(id, billDTO);
         return ResponseEntity.ok(updated);
+    }
+
+    @PostMapping("/{id}/split")
+    public ResponseEntity<List<BillDTO>> splitBill( @PathVariable("id") UUID billId, @RequestBody SplitBillRequestDTO splitRequest) {
+        List<BillDTO> splitBills = billService.splitBill(billId, splitRequest);
+        return new ResponseEntity<>(splitBills, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

@@ -601,7 +601,6 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/Split'
-
     Error:
       type: object
       properties:

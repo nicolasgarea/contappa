@@ -714,6 +714,56 @@
 					"response": []
 				},
 				{
+					"name": "Bill Split",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Split bills returned\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"    pm.expect(jsonData.length).to.be.above(0);",
+									"",
+									"    jsonData.forEach((bill) => {",
+									"        pm.expect(bill).to.have.property(\"products\");",
+									"        pm.expect(bill.products).to.be.an(\"array\");",
+									"        pm.expect(bill.products.length).to.be.above(0);",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"splits\": [\n    {\n      \"products\": [\n        {\n          \"productId\": \"{{product_id}}\",\n          \"quantity\": 1\n        }\n      ]\n    },\n    {\n      \"products\": [\n        {\n          \"productId\": \"{{product_id}}\",\n          \"quantity\": 1\n        }\n      ]\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bills/{{bill_id}}/split",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bills",
+								"{{bill_id}}",
+								"split"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Bill",
 					"event": [
 						{

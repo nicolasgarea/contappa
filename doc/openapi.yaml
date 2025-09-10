@@ -118,7 +118,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Error"
     delete:
-      summary: Delete a specific product
+      summary: Delete a specific bill
       operationId: deleteBill
       responses:
         '204':
@@ -601,7 +601,6 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/Split'
-
     Error:
       type: object
       properties:

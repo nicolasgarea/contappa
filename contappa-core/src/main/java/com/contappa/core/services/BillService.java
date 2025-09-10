@@ -4,6 +4,9 @@ package com.contappa.core.services;
 import com.contappa.core.dto.BillDTO;
 import com.contappa.core.dto.CreateBillRequestDTO;
 import com.contappa.core.dto.UpdateBillRequestDTO;
+import com.contappa.core.dto.SplitDTO;
+import com.contappa.core.dto.SplitBillRequestDTO;
+import com.contappa.core.dto.ProductSplitDTO;
 import com.contappa.core.exceptions.BillNotFoundException;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.exceptions.TableNotFoundException;
@@ -96,6 +99,46 @@ public class BillService {
         }
 
         return billMapper.toBillDTO(billRepository.save(existingBill));
+    }
+
+    public List<BillDTO> splitBill(UUID billId, SplitBillRequestDTO request) {
+        Bill originalBill = billRepository.findById(billId)
+            .orElseThrow(() -> new BillNotFoundException("Bill not found."));
+
+        List<BillDTO> splitBills = new ArrayList<>();
+
+        for (SplitDTO split : request.getSplits()) {
+            Bill newBill = new Bill();
+            newBill.setTable(originalBill.getTable());
+
+            BigDecimal amount = BigDecimal.ZERO;
+            List<BillProduct> splitProducts = new ArrayList<>();
+
+            for (ProductSplitDTO ps : split.getProducts()) {
+                BillProduct originalProduct = originalBill.getBillProducts().stream()
+                    .filter(bp -> bp.getProduct().getId().equals(ps.getProductId()))
+                    .findFirst()
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found in bill"));
+
+                BillProduct bp = new BillProduct();
+                bp.setBill(newBill);
+                bp.setProduct(originalProduct.getProduct());
+                bp.setQuantity(ps.getQuantity());
+                bp.setUnitPrice(originalProduct.getUnitPrice());
+
+                splitProducts.add(bp);
+                amount = amount.add(bp.getUnitPrice().multiply(BigDecimal.valueOf(bp.getQuantity())));
+            }
+
+            newBill.setBillProducts(splitProducts);
+            newBill.setAmount(amount);
+            newBill.setCreatedAt(LocalDateTime.now());
+
+            Bill savedBill = billRepository.save(newBill);
+            splitBills.add(billMapper.toBillDTO(savedBill));
+        }
+
+        return splitBills;
     }
 
     public void delete(UUID id){

@@ -1,8 +1,6 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.BillDTO;
-import com.contappa.core.dto.CreateBillRequestDTO;
-import com.contappa.core.dto.UpdateBillRequestDTO;
+import com.contappa.core.dto.*;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.exceptions.TableNotFoundException;
 import com.contappa.core.mappers.BillMapper;
@@ -119,6 +117,70 @@ public class BillServiceTest {
         BillDTO resultDTO = billService.update(id, updateDTO);
 
         Assertions.assertEquals(expectedDTO, resultDTO);
+    }
+
+    @Test
+    public void testSplitBill() {
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+        TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
+        ProductRepository productRepository = Mockito.mock(ProductRepository.class);
+        BillService billService = new BillService(billRepository, tablesRepository, productRepository, billMapper);
+
+        UUID billId = UUID.randomUUID();
+        UUID productId1 = UUID.randomUUID();
+        UUID productId2 = UUID.randomUUID();
+
+        Product product1 = new Product();
+        product1.setId(productId1);
+        product1.setPrice(BigDecimal.TEN);
+
+        Product product2 = new Product();
+        product2.setId(productId2);
+        product2.setPrice(BigDecimal.valueOf(5));
+
+        BillProduct bp1 = new BillProduct();
+        bp1.setProduct(product1);
+        bp1.setQuantity(2);
+        bp1.setUnitPrice(product1.getPrice());
+
+        BillProduct bp2 = new BillProduct();
+        bp2.setProduct(product2);
+        bp2.setQuantity(1);
+        bp2.setUnitPrice(product2.getPrice());
+
+        Bill originalBill = new Bill();
+        originalBill.setId(billId);
+        originalBill.setBillProducts(List.of(bp1, bp2));
+        originalBill.setTable(new Tables());
+
+        SplitBillRequestDTO splitRequest = new SplitBillRequestDTO(List.of(
+            new SplitDTO(List.of(
+                new ProductSplitDTO(productId1, 1),
+                new ProductSplitDTO(productId2, 1)
+            )),
+            new SplitDTO(List.of(
+                new ProductSplitDTO(productId1, 1)
+            ))
+        ));
+
+        Bill savedBill1 = new Bill();
+        Bill savedBill2 = new Bill();
+        BillDTO dto1 = new BillDTO();
+        BillDTO dto2 = new BillDTO();
+
+        Mockito.when(billRepository.findById(billId)).thenReturn(Optional.of(originalBill));
+        Mockito.when(billRepository.save(Mockito.any(Bill.class)))
+            .thenReturn(savedBill1)
+            .thenReturn(savedBill2);
+        Mockito.when(billMapper.toBillDTO(savedBill1)).thenReturn(dto1);
+        Mockito.when(billMapper.toBillDTO(savedBill2)).thenReturn(dto2);
+
+        List<BillDTO> result = billService.splitBill(billId, splitRequest);
+
+        Assertions.assertEquals(2, result.size());
+        Assertions.assertTrue(result.contains(dto1));
+        Assertions.assertTrue(result.contains(dto2));
     }
 
     @Test

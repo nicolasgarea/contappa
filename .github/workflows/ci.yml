@@ -36,3 +36,13 @@ jobs:
             - name: Run Checkstyle
               run: mvn checkstyle:check
               working-directory: contappa-core
+
+            - name: Set up node
+              uses: actions/setup-node@v4
+
+            - name: Install Redocly CLI
+              run: npm install -g @redocly/cli@latest
+
+            - name: Run OpenAPI linting
+              run: redocly lint doc/openapi.yaml --format=github-actions
+

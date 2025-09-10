@@ -4,7 +4,6 @@ import java.util.List;
 
 public class CreateTableRequestDTO {
     private int number;
-    private List<String> productList;
 
     public int getNumber() {
         return number;
@@ -12,13 +11,5 @@ public class CreateTableRequestDTO {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public List<String> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<String> productList) {
-        this.productList = productList;
     }
 }

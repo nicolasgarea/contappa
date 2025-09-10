@@ -5,29 +5,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class BillDTO {
+public class UpdateBillRequestDTO {
 
-    private UUID id;
     private BigDecimal amount;
     private LocalDate date;
-    private List<ProductQuantity> products;
     private UUID tableId;
-
-    public UUID getTableId() {
-        return tableId;
-    }
-
-    public void setTableId(UUID tableId) {
-        this.tableId = tableId;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    private List<UpdateBillRequestDTO.ProductQuantity> products;
 
     public BigDecimal getAmount() {
         return amount;
@@ -45,23 +28,31 @@ public class BillDTO {
         this.date = date;
     }
 
-    public List<ProductQuantity> getProducts() {
+    public UUID getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(UUID tableId) {
+        this.tableId = tableId;
+    }
+
+    public List<UpdateBillRequestDTO.ProductQuantity> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductQuantity> products) {
+    public void setProducts(List<UpdateBillRequestDTO.ProductQuantity> products) {
         this.products = products;
     }
 
     public static class ProductQuantity {
-        private String productId;
+        private UUID productId;
         private int quantity;
 
-        public String getProductId() {
+        public UUID getProductId() {
             return productId;
         }
 
-        public void setProductId(String productId) {
+        public void setProductId(UUID productId) {
             this.productId = productId;
         }
 

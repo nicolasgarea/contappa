@@ -1,19 +1,15 @@
 package com.contappa.core.controllers;
 
+import com.contappa.core.dto.CreateProductRequestDTO;
 import com.contappa.core.dto.ProductDTO;
-import com.contappa.core.dto.TablesDTO;
-import com.contappa.core.exceptions.ProductNotFoundException;
-import com.contappa.core.models.Product;
+import com.contappa.core.dto.UpdateProductRequestDTO;
 import com.contappa.core.services.ProductService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -26,7 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody CreateProductRequestDTO productDTO){
         ProductDTO product = productService.create(productDTO);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
@@ -43,8 +39,8 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductDTO productDTO){
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable UUID id, @RequestBody UpdateProductRequestDTO productDTO){
         ProductDTO updated = productService.update(id, productDTO);
         return ResponseEntity.ok(updated);
     }

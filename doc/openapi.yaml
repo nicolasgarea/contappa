@@ -135,6 +135,45 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Error"
+  "/bills/{billId}/split":
+    post:
+      summary: Split a bill into multiple sub-bills
+      operationId: splitBill
+      parameters:
+        - "$ref": "#/components/parameters/billId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SplitBillRequest"
+      responses:
+        '200':
+          description: Bills created from split
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Bill"
+        '400':
+          description: Invalid split (quantities exceed original)
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Error"
   "/products":
     post:
       summary: Create new product
@@ -530,6 +569,39 @@ components:
                 type: integer
         tableId:
           type: string
+    ProductSplit:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+    Split:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/ProductSplit'
+
+    SplitBillRequest:
+      type: object
+      required:
+        - splits
+      properties:
+        splits:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Split'
+
     Error:
       type: object
       properties:

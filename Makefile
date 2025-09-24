@@ -2,10 +2,10 @@
 
 
 db_up:
-	docker-compose -f docker/docker-compose.yml up -d db
+	docker compose -f docker/docker-compose.yml up -d db
 
 db_down:
-	docker-compose -f docker/docker-compose.yml rm -sf db
+	docker compose -f docker/docker-compose.yml rm -sf db
 
 db_reload:
 	$(MAKE) db_down

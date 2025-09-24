@@ -13,3 +13,16 @@ services:
       - 5432:5432
     volumes:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+
+  backend:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/contappa_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      - 8080:8080

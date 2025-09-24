@@ -71,6 +71,11 @@
       <version>5.17.0</version>
       <scope>test</scope>
     </dependency>
+
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
 	</dependencies>
 
 	<build>

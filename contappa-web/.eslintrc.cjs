@@ -1,5 +1,6 @@
 module.exports = {
     root: true,
+    ignorePatterns: ["src/api/generated/**"],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaVersion: 2021,

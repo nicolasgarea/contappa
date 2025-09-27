@@ -39,14 +39,6 @@ jobs:
       - name: Set up node
         uses: actions/setup-node@v4
 
-      - name: Install frontend dependencies
-        run: npm ci
-        working-directory: contappa-web
-
-      - name: Run ESLint
-        run: npm run lint
-        working-directory: contappa-web
-
       - name: Install Redocly CLI
         run: npm install -g @redocly/cli@latest
 

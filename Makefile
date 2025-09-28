@@ -11,8 +11,8 @@ db_reload: db_down db_up
 check:
 	mvn -f contappa-core checkstyle:check
 
-run:
-	mvn -f contappa-core/pom.xml spring-boot:run
+deploy:
+	docker compose -f docker/docker-compose.yml up
 
 wait-for-app:
 	@echo "Waiting for application to be ready..."

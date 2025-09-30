@@ -1,30 +1,40 @@
+Table categories {
+    id uuid [pk]
+    name varchar [not null]
+    description text
+}
+
 Table products {
     id uuid [pk]
-    name varchar
-    price numeric
+    name varchar [not null]
+    price numeric(10,2) [not null]
+    category_id uuid [ref: > categories.id]
+    image_url varchar
 }
 
 Table tables {
     id uuid [pk]
-    number int
+    number int [not null]
 }
 
-Table bills{
-    id uuid[primary key]
+Table bills {
+    id uuid [pk]
     table_id uuid [ref: > tables.id]
-    amount decimal
-    date date
-    status varchar
-    created_at datetime 
-    updated_at datetime
+    amount numeric(10,2) [not null]
+    date date [not null]
+    status varchar [default: 'open']
+    created_at datetime [default: `CURRENT_TIMESTAMP`]
+    updated_at datetime [default: `CURRENT_TIMESTAMP`]
 }
 
-Table bill_products {
+Table bill_items {
     bill_id uuid [ref: > bills.id]
     product_id uuid [ref: > products.id]
-    quantity int
-    unit_price numeric
-    created_at datetime 
-    updated_at datetime
-    primary key(bill_id, product_id)
+    quantity int [not null]
+    unit_price numeric(10,2) [not null]
+    created_at datetime [default: `CURRENT_TIMESTAMP`]
+    updated_at datetime [default: `CURRENT_TIMESTAMP`]
+    indexes {
+        (bill_id, product_id) [pk]
+    }
 }

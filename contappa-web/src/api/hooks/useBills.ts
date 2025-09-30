@@ -39,6 +39,11 @@ export const useCreateBill = () => {
 export const useUpdateBill = () => {
     const queryClient = useQueryClient();
     return useMutation(
-        ({ billData, billId } : UpdateBillInput)
+        ({ billId, billData }: UpdateBillInput) => updateBill(billId, billData),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["bills"]);
+            }
+        }
     )
 }

@@ -90,5 +90,3 @@ export type UpdateProductRequest = {
 export type UpdateTableRequest = {
     number?: number;
 };
-
-export type BillId = ParameterbillId;

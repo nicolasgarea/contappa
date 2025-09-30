@@ -5,6 +5,7 @@ import com.contappa.core.dto.CreateCategoryRequestDTO;
 import com.contappa.core.dto.UpdateCategoryRequestDTO;
 import com.contappa.core.models.Category;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
@@ -12,8 +13,10 @@ public interface CategoryMapper {
 
     Category toCategory(CategoryDTO categoryDTO);
 
+    @Mapping(target = "id", ignore = true)
     Category toCategory(CreateCategoryRequestDTO createCategoryRequestDTO);
 
+    @Mapping(target = "id", ignore = true)
     Category toCategory(UpdateCategoryRequestDTO updateCategoryRequestDTO);
 }
 

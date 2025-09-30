@@ -19,6 +19,10 @@ public class Category {
 
     public Category() {}
 
+    public Category(UUID id) {
+        this.id = id;
+    }
+
     public Category(String name, String description) {
         this.name = name;
         this.description = description;

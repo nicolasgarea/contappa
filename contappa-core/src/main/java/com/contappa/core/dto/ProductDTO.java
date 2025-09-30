@@ -7,6 +7,8 @@ public class ProductDTO {
     private UUID id;
     private String name;
     private BigDecimal price;
+    private UUID categoryId;
+    private String imageUrl;
 
     public UUID getId() {
         return id;
@@ -14,6 +16,14 @@ public class ProductDTO {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -31,4 +41,14 @@ public class ProductDTO {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
 }

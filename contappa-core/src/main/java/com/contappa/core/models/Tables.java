@@ -10,7 +10,8 @@ public class Tables {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "number")
+
+    @Column(name = "number", nullable = false)
     private int number;
 
     public Tables() {

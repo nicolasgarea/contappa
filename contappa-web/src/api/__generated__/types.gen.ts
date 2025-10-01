@@ -4,24 +4,32 @@ export type Bill = {
     id?: string;
     amount?: number;
     date?: string;
+    tableId?: string;
     products?: Array<{
         productId?: string;
         quantity?: number;
     }>;
-    tableId?: string;
+};
+
+export type Category = {
+    id?: string;
+    name?: string;
+    description?: string;
 };
 
 export type CreateBillRequest = {
     amount: number;
     date: string;
-    /**
-     * ID of the table associated with this bill
-     */
-    tableId: TableId;
+    tableId: string;
     products: Array<{
-        productId?: ProductId;
+        productId?: string;
         quantity?: number;
     }>;
+};
+
+export type CreateCategoryRequest = {
+    name: string;
+    description?: string;
 };
 
 export type CreateProductRequest = {
@@ -40,6 +48,8 @@ export type Error = {
 
 export type ParameterbillId = string;
 
+export type ParametercategoryId = string;
+
 export type ParameterproductId = string;
 
 export type ParametertableId = string;
@@ -50,19 +60,13 @@ export type Product = {
     price?: number;
 };
 
-export type ProductId = string;
-
-export type ProductSplit = {
-    productId: string;
-    quantity: number;
-};
-
-export type Split = {
-    products: Array<ProductSplit>;
-};
-
 export type SplitBillRequest = {
-    splits: Array<Split>;
+    splits?: Array<{
+        products?: Array<{
+            productId?: string;
+            quantity?: number;
+        }>;
+    }>;
 };
 
 export type Table = {
@@ -70,16 +74,19 @@ export type Table = {
     number?: number;
 };
 
-export type TableId = string;
-
 export type UpdateBillRequest = {
     amount?: number;
     date?: string;
+    tableId?: string;
     products?: Array<{
         productId?: string;
         quantity?: number;
     }>;
-    tableId?: string;
+};
+
+export type UpdateCategoryRequest = {
+    name?: string;
+    description?: string;
 };
 
 export type UpdateProductRequest = {

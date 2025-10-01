@@ -1,4 +1,4 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.error;
 
 public class ErrorDTO {
     private int code;

@@ -1,8 +1,8 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.CreateProductRequestDTO;
-import com.contappa.core.dto.ProductDTO;
-import com.contappa.core.dto.UpdateProductRequestDTO;
+import com.contappa.core.dto.product.CreateProductRequestDTO;
+import com.contappa.core.dto.product.ProductDTO;
+import com.contappa.core.dto.product.UpdateProductRequestDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;

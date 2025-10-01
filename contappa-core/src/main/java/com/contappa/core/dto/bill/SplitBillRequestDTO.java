@@ -1,4 +1,6 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.bill;
+
+import com.contappa.core.dto.product.SplitDTO;
 
 import java.util.List;
 

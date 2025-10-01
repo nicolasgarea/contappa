@@ -1,8 +1,11 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.*;
-import com.contappa.core.exceptions.ProductNotFoundException;
-import com.contappa.core.exceptions.TableNotFoundException;
+import com.contappa.core.dto.bill.BillDTO;
+import com.contappa.core.dto.bill.CreateBillRequestDTO;
+import com.contappa.core.dto.bill.SplitBillRequestDTO;
+import com.contappa.core.dto.bill.UpdateBillRequestDTO;
+import com.contappa.core.dto.product.ProductSplitDTO;
+import com.contappa.core.dto.product.SplitDTO;
 import com.contappa.core.mappers.BillMapper;
 import com.contappa.core.models.Bill;
 import com.contappa.core.models.BillProduct;
@@ -17,8 +20,6 @@ import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

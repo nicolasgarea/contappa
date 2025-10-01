@@ -1,8 +1,8 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.CreateTableRequestDTO;
-import com.contappa.core.dto.TablesDTO;
-import com.contappa.core.dto.UpdateTableRequestDTO;
+import com.contappa.core.dto.table.CreateTableRequestDTO;
+import com.contappa.core.dto.table.TablesDTO;
+import com.contappa.core.dto.table.UpdateTableRequestDTO;
 import com.contappa.core.exceptions.TableNotFoundException;
 import com.contappa.core.mappers.TablesMapper;
 import com.contappa.core.models.Tables;

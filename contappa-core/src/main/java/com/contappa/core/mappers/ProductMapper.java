@@ -1,9 +1,9 @@
 package com.contappa.core.mappers;
 
-import com.contappa.core.dto.CreateProductRequestDTO;
-import com.contappa.core.dto.ProductDTO;
-import com.contappa.core.dto.UpdateProductRequestDTO;
-import com.contappa.core.models.Category;
+
+import com.contappa.core.dto.product.CreateProductRequestDTO;
+import com.contappa.core.dto.product.ProductDTO;
+import com.contappa.core.dto.product.UpdateProductRequestDTO;
 import com.contappa.core.models.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

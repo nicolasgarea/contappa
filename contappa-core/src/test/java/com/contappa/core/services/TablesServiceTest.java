@@ -1,13 +1,11 @@
 package com.contappa.core.services;
 
 
-import com.contappa.core.dto.CreateTableRequestDTO;
-import com.contappa.core.dto.TablesDTO;
-import com.contappa.core.dto.UpdateTableRequestDTO;
-import com.contappa.core.exceptions.TableNotFoundException;
+import com.contappa.core.dto.table.CreateTableRequestDTO;
+import com.contappa.core.dto.table.TablesDTO;
+import com.contappa.core.dto.table.UpdateTableRequestDTO;
 import com.contappa.core.mappers.TablesMapper;
 import com.contappa.core.models.Tables;
-import com.contappa.core.repositories.ProductRepository;
 import com.contappa.core.repositories.TablesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @ExtendWith(MockitoExtension.class)
 public class TablesServiceTest {

@@ -1,12 +1,12 @@
 package com.contappa.core.services;
 
 
-import com.contappa.core.dto.BillDTO;
-import com.contappa.core.dto.CreateBillRequestDTO;
-import com.contappa.core.dto.UpdateBillRequestDTO;
-import com.contappa.core.dto.SplitDTO;
-import com.contappa.core.dto.SplitBillRequestDTO;
-import com.contappa.core.dto.ProductSplitDTO;
+import com.contappa.core.dto.bill.BillDTO;
+import com.contappa.core.dto.bill.CreateBillRequestDTO;
+import com.contappa.core.dto.bill.UpdateBillRequestDTO;
+import com.contappa.core.dto.product.SplitDTO;
+import com.contappa.core.dto.bill.SplitBillRequestDTO;
+import com.contappa.core.dto.product.ProductSplitDTO;
 import com.contappa.core.exceptions.BillNotFoundException;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.exceptions.TableNotFoundException;

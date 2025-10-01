@@ -9,10 +9,35 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "name")
+
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "price")
+
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public Product(){
 

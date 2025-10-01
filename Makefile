@@ -36,6 +36,7 @@ integration-tests:
 	  -e postman/enviroments/contappa-local.postman_environment.json
 
 ci-tests: db_up
+	docker compose -f docker/docker-compose.yml build backend
 	docker compose -f docker/docker-compose.yml up -d
 	$(MAKE) wait-for-app
 	$(MAKE) integration-tests

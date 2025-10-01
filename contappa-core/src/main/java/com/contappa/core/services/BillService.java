@@ -20,8 +20,10 @@ import com.contappa.core.repositories.ProductRepository;
 import com.contappa.core.repositories.TablesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class BillService {
         this.billMapper = billMapper;
     }
 
+    @Transactional
     public BillDTO create(CreateBillRequestDTO request){
         Tables table = tablesRepository.findById(request.getTableId()).orElseThrow(() -> new TableNotFoundException("Table not found."));
         List<BillProduct> billProducts = new ArrayList<>();
@@ -62,6 +65,7 @@ public class BillService {
         bill.setAmount(amount);
         bill.setBillProducts(billProducts);
         bill.setCreatedAt(LocalDateTime.now());
+        bill.setDate(LocalDate.now());
         Bill billSaved = billRepository.save(bill);
         return billMapper.toBillDTO(billSaved);
     }
@@ -71,11 +75,11 @@ public class BillService {
         return billMapper.toBillDTO(bill);
     }
 
-    public BillDTO update(UUID id, UpdateBillRequestDTO billDTO){
+    @Transactional
+    public BillDTO update(UUID id, UpdateBillRequestDTO billDTO) {
         Bill existingBill = billRepository.findById(id)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
 
-        existingBill.setAmount(billDTO.getAmount());
         existingBill.setDate(billDTO.getDate());
 
         if (billDTO.getTableId() != null) {
@@ -86,21 +90,35 @@ public class BillService {
 
         if (billDTO.getProducts() != null) {
             existingBill.getBillProducts().clear();
+            BigDecimal newAmount = BigDecimal.ZERO;
+
             for (UpdateBillRequestDTO.ProductQuantity pq : billDTO.getProducts()) {
                 Product product = productRepository.findById(pq.getProductId())
                     .orElseThrow(() -> new ProductNotFoundException("Product not found."));
+
+                if (pq.getQuantity() <= 0) {
+                    throw new IllegalArgumentException("Quantity must be greater than zero.");
+                }
+
                 BillProduct bp = new BillProduct();
                 bp.setBill(existingBill);
                 bp.setProduct(product);
                 bp.setQuantity(pq.getQuantity());
                 bp.setUnitPrice(product.getPrice());
+
                 existingBill.getBillProducts().add(bp);
+
+                newAmount = newAmount.add(product.getPrice().multiply(BigDecimal.valueOf(pq.getQuantity())));
             }
+            existingBill.setAmount(newAmount);
+        } else if (billDTO.getAmount() != null) {
+            existingBill.setAmount(billDTO.getAmount());
         }
 
         return billMapper.toBillDTO(billRepository.save(existingBill));
     }
 
+    @Transactional
     public List<BillDTO> splitBill(UUID billId, SplitBillRequestDTO request) {
         Bill originalBill = billRepository.findById(billId)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
@@ -133,6 +151,7 @@ public class BillService {
             newBill.setBillProducts(splitProducts);
             newBill.setAmount(amount);
             newBill.setCreatedAt(LocalDateTime.now());
+            newBill.setDate(LocalDate.now());
 
             Bill savedBill = billRepository.save(newBill);
             splitBills.add(billMapper.toBillDTO(savedBill));
@@ -141,6 +160,7 @@ public class BillService {
         return splitBills;
     }
 
+    @Transactional
     public void delete(UUID id){
         Bill bill = billRepository.findById(id).orElseThrow(() -> new BillNotFoundException("Bill not found."));
         billRepository.delete(bill);

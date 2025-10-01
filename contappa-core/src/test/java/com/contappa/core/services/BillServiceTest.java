@@ -100,18 +100,22 @@ public class BillServiceTest {
 
         UpdateBillRequestDTO updateDTO = new UpdateBillRequestDTO();
         updateDTO.setAmount(BigDecimal.valueOf(100));
-        updateDTO.setDate(LocalDate.now());
 
         UpdateBillRequestDTO.ProductQuantity pq = new UpdateBillRequestDTO.ProductQuantity();
         pq.setProductId(UUID.randomUUID());
         pq.setQuantity(2);
         updateDTO.setProducts(List.of(pq));
 
+        Product mockProduct = new Product();
+        mockProduct.setId(pq.getProductId());
+        mockProduct.setPrice(BigDecimal.valueOf(50));
+
         BillDTO expectedDTO = new BillDTO();
 
         Mockito.when(billRepository.findById(id)).thenReturn(Optional.of(bill));
         Mockito.when(billRepository.save(bill)).thenReturn(bill);
-        Mockito.when(productRepository.findById(pq.getProductId())).thenReturn(Optional.of(new Product()));
+        Mockito.when(productRepository.findById(pq.getProductId()))
+            .thenReturn(Optional.of(mockProduct));;
         Mockito.when(billMapper.toBillDTO(bill)).thenReturn(expectedDTO);
 
         BillDTO resultDTO = billService.update(id, updateDTO);

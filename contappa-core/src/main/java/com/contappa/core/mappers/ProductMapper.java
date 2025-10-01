@@ -17,23 +17,12 @@ public interface ProductMapper {
     @Mapping(source = "category.id", target = "categoryId")
     ProductDTO toProductDTO(Product product);
 
-    @Mapping(target = "category", ignore = true)
-    Product toProduct(ProductDTO productDTO);
-
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", expression = "java(dto.getCategoryId() != null ? new Category(dto.getCategoryId()) : null)")
     Product toProduct(CreateProductRequestDTO dto);
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "category", expression = "java(dto.getCategoryId() != null ? new Category(dto.getCategoryId()) : null)")
     Product toProduct(UpdateProductRequestDTO dto);
 
-    @Named("uuidToCategory")
-    default Category map(UUID categoryId) {
-        if (categoryId == null) {
-            return null;
-        }
-        return new Category(categoryId);
-    }
+    @Mapping(target = "category", expression = "java(productDTO.getCategoryId() != null ? new Category(productDTO.getCategoryId()) : null)")
+    Product toProduct(ProductDTO productDTO);
 }
-

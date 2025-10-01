@@ -10,27 +10,21 @@
 			"name": "Products",
 			"item": [
 				{
-					"name": "Products",
+					"name": "Category",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status is 201', function() {",
+									"pm.test(\"Category created\", function() {",
 									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Response body has id\", function () {",
-									"    let jsonData = pm.response.json();",
-									"    pm.expect(jsonData).to.have.property(\"id\");",
-									"});",
-									"",
-									"let jsonData = pm.response.json();      ",
-									"pm.environment.set(\"product_id\", jsonData.id); ",
-									""
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"category_id\", jsonData.id);",
+									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -39,7 +33,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"product-name\",\n  \"price\": 0\n}\n",
+							"raw": "{\n  \"name\": \"category\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -47,11 +41,57 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products",
+							"raw": "{{base_url}}/categories",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Product created\", function() {",
+									"    pm.response.to.have.status(201);",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"product_id\", jsonData.id);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"product-name\",\n  \"price\": 0,\n  \"categoryId\": \"{{category_id}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories/{{category_id}}/products",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories",
+								"{{category_id}}",
 								"products"
 							]
 						}
@@ -83,7 +123,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -91,11 +132,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/products/{{product_id}}",
+							"raw": "{{base_url}}/categories/{{category_id}}/products/{{product_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories",
+								"{{category_id}}",
 								"products",
 								"{{product_id}}"
 							]
@@ -121,7 +164,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -129,11 +173,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/products",
+							"raw": "{{base_url}}/categories/{{category_id}}/products",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories",
+								"{{category_id}}",
 								"products"
 							]
 						}
@@ -160,7 +206,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -169,7 +216,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \n  \"name\": \"updated_name\",\n  \"price\": 1.7\n}\n",
+							"raw": "{  \n  \"name\": \"updated_name\",\n  \"price\": 1.7,\n  \"categoryId\": \"{{category_id}}\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -177,11 +224,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products/{{product_id}}",
+							"raw": "{{base_url}}/categories/{{category_id}}/products/{{product_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories",
+								"{{category_id}}",
 								"products",
 								"{{product_id}}"
 							]
@@ -196,13 +245,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test('Response status is 204', function() {",
+									"pm.test('Response status is 204', function () {",
 									"    pm.response.to.have.status(204);",
 									"});",
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -210,11 +260,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/products/{{product_id}}",
+							"raw": "{{base_url}}/categories/{{category_id}}/products/{{product_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories",
+								"{{category_id}}",
 								"products",
 								"{{product_id}}"
 							]
@@ -450,6 +502,49 @@
 			"name": "Bills",
 			"item": [
 				{
+					"name": "Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Category created\", function() {",
+									"    pm.response.to.have.status(201);",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"category_id\", jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Comida\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/categories",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Products",
 					"event": [
 						{
@@ -470,7 +565,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -479,7 +575,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"product-name\",\n  \"price\": 0\n}\n",
+							"raw": "{\n  \"name\": \"product-name\",\n  \"price\": 10,\n  \"categoryId\": \"{{category_id}}\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -487,11 +583,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/products",
+							"raw": "{{base_url}}/categories/{{category_id}}/products",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"categories",
+								"{{category_id}}",
 								"products"
 							]
 						}
@@ -567,7 +665,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						},
 						{
@@ -588,7 +687,8 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -597,7 +697,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"amount\": 10.5,\n  \"date\": \"2024-01-20\",\n  \"tableId\": \"{{table_id}}\",\n  \"products\": [\n    {\n      \"productId\": \"{{product_id}}\",\n      \"quantity\": 1\n    }\n  ]\n}",
+							"raw": "{\n    \"tableId\": \"{{table_id}}\",\n    \"products\": [\n        {\n            \"productId\": \"{{product_id}}\",\n            \"quantity\": 2\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -605,11 +705,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/bills",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"tables",
+								"{{table_id}}",
 								"bills"
 							]
 						}
@@ -643,19 +745,34 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{base_url}}/bills/{{bill_id}}",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{bill_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"tables",
+								"{{table_id}}",
 								"bills",
 								"{{bill_id}}"
 							]
@@ -679,12 +796,13 @@
 									"    var billId = pm.environment.get(\"bill_id\");",
 									"    var tableId = pm.environment.get(\"table_id\");",
 									"    pm.expect(jsonData.id).to.eql(billId); ",
-									"    pm.expect(jsonData.amount).to.eql(125);",
+									"    pm.expect(jsonData.amount).to.eql(20);",
 									"    pm.expect(jsonData.tableId).to.eql(tableId);",
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -701,11 +819,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/bills/{{bill_id}}",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{bill_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"tables",
+								"{{table_id}}",
 								"bills",
 								"{{bill_id}}"
 							]
@@ -733,7 +853,8 @@
 									"});"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -750,11 +871,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/bills/{{bill_id}}/split",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{bill_id}}/split",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"tables",
+								"{{table_id}}",
 								"bills",
 								"{{bill_id}}",
 								"split"
@@ -776,19 +899,31 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{base_url}}/bills/{{bill_id}}",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{bill_id}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
+								"tables",
+								"{{table_id}}",
 								"bills",
 								"{{bill_id}}"
 							]

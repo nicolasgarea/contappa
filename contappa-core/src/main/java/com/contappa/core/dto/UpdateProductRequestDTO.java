@@ -1,5 +1,7 @@
 package com.contappa.core.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -7,6 +9,7 @@ public class UpdateProductRequestDTO {
     private String name;
     private BigDecimal price;
     private String imageUrl;
+    @NotNull
     private UUID categoryId;
 
     public UUID getCategoryId() {

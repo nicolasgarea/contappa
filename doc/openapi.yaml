@@ -6,304 +6,11 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-  description: Rest API for managing the Contappa service
+  description: REST API for managing the Contappa service
 servers:
   - url: 127.0.0.1
 security: []
 paths:
-  "/bills":
-    post:
-      summary: Create new bill
-      operationId: createBill
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CreateBillRequest"
-      responses:
-        '201':
-          description: Bill created succesfully
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Bill"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    get:
-      summary: Get all bills
-      operationId: getAllBills
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Bill"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-  "/bills/{billId}":
-    parameters:
-    - "$ref": "#/components/parameters/billId"
-    get:
-      summary: Fetch the bill information for a given ID
-      operationId: getBillById
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Bill"
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    patch:
-      summary: Update details of a specific bill
-      operationId: updateBill
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdateBillRequest"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Bill"
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    delete:
-      summary: Delete a specific bill
-      operationId: deleteBill
-      responses:
-        '204':
-          description: Deleted succesfully
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-  "/bills/{billId}/split":
-    post:
-      summary: Split a bill into multiple sub-bills
-      operationId: splitBill
-      parameters:
-        - "$ref": "#/components/parameters/billId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SplitBillRequest"
-      responses:
-        '200':
-          description: Bills created from split
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Bill"
-        '400':
-          description: Invalid split (quantities exceed original)
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        '404':
-          description: Bill not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-  "/products":
-    post:
-      summary: Create new product
-      operationId: createProduct
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CreateProductRequest"
-      responses:
-        '201':
-          description: Product created succesfully
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Product"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    get:
-      summary: Get all products
-      operationId: getAllProducts
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Product"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-  "/products/{productId}":
-    parameters:
-    - "$ref": "#/components/parameters/productId"
-    get:
-      summary: Fetch the product information for a given ID
-      operationId: getProductById
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Product"
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    patch:
-      summary: Update details of a specific product
-      operationId: updateProduct
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UpdateProductRequest"
-      responses:
-        '200':
-          description: Ok
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Product"
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    delete:
-      summary: Delete a specific product
-      operationId: deleteProduct
-      responses:
-        '204':
-          description: Deleted succesfully
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
   "/tables":
     post:
       summary: Create new table
@@ -313,137 +20,553 @@ paths:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/CreateTableRequest"
+              $ref: "#/components/schemas/CreateTableRequest"
       responses:
-        '201':
-          description: Table created succesfully
+        "201":
+          description: Table created successfully
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Table"
-        '400':
+                $ref: "#/components/schemas/Table"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
     get:
       summary: Get all tables
       operationId: getAllTables
       responses:
-        '200':
+        "200":
           description: Ok
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/Table"
-        '400':
+                  $ref: "#/components/schemas/Table"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
+
   "/tables/{tableId}":
     parameters:
-    - "$ref": "#/components/parameters/tableId"
+      - $ref: "#/components/parameters/tableId"
     get:
-      summary: Fetch the table information for a given ID
+      summary: Get table by ID
       operationId: getTableById
       responses:
-        '200':
+        "200":
           description: Ok
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Table"
-        '404':
+                $ref: "#/components/schemas/Table"
+        "404":
           description: Not found
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
     patch:
-      summary: Update details of a specific table
+      summary: Update table
       operationId: updateTable
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/UpdateTableRequest"
+              $ref: "#/components/schemas/UpdateTableRequest"
       responses:
-        '200':
-          description: Ok
+        "200":
+          description: Table updated
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Table"
-        '404':
-          description: Not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-        '400':
+                $ref: "#/components/schemas/Table"
+        "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
-        default:
-          description: Unexpected Error
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Error"
-    delete:
-      summary: Delete a specific table
-      operationId: deleteTable
-      responses:
-        '204':
-          description: Deleted succesfully
-        '404':
+                $ref: "#/components/schemas/Error"
+        "404":
           description: Not found
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
         default:
           description: Unexpected Error
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Error"
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete table
+      operationId: deleteTable
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/tables/{tableId}/bills":
+    parameters:
+      - $ref: "#/components/parameters/tableId"
+    post:
+      summary: Create a bill
+      operationId: createBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBillRequest"
+      responses:
+        "201":
+          description: Bill created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: Get all bills
+      operationId: getAllBills
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bill"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/tables/{tableId}/bills/{billId}":
+    parameters:
+      - $ref: "#/components/parameters/tableId"
+      - $ref: "#/components/parameters/billId"
+    get:
+      summary: Get bill by ID
+      operationId: getBillById
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      summary: Update bill
+      operationId: updateBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBillRequest"
+      responses:
+        "200":
+          description: Bill updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete bill
+      operationId: deleteBill
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/tables/{tableId}/bills/{billId}/split":
+    parameters:
+      - $ref: "#/components/parameters/tableId"
+      - $ref: "#/components/parameters/billId"
+    post:
+      summary: Split a bill
+      operationId: splitBill
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SplitBillRequest"
+      responses:
+        "201":
+          description: Bills created from split
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bill"
+        "400":
+          description: Invalid split
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/categories":
+    post:
+      summary: Create a category
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryRequest"
+      responses:
+        "201":
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: List all categories
+      operationId: listCategories
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/categories/{categoryId}":
+    parameters:
+      - $ref: "#/components/parameters/categoryId"
+    patch:
+      summary: Update category
+      operationId: updateCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCategoryRequest"
+      responses:
+        "200":
+          description: Category updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      summary: Delete category
+      operationId: deleteCategory
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/categories/{categoryId}/products":
+    parameters:
+      - $ref: "#/components/parameters/categoryId"
+    post:
+      summary: Create a product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductRequest"
+      responses:
+        "201":
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      summary: List products
+      operationId: getAllProducts
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/categories/{categoryId}/products/{productId}":
+    parameters:
+      - $ref: "#/components/parameters/categoryId"
+      - $ref: "#/components/parameters/productId"
+    get:
+      summary: Get product by ID
+      operationId: getProductById
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      summary: Update product
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductRequest"
+      responses:
+        "200":
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Delete product
+      operationId: deleteProduct
+      responses:
+        "204":
+          description: Deleted successfully
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   parameters:
     tableId:
       name: tableId
-      in: path
-      required: true
-      schema:
-        type: string
-    productId:
-      name: productId
       in: path
       required: true
       schema:
@@ -454,53 +577,38 @@ components:
       required: true
       schema:
         type: string
+    categoryId:
+      name: categoryId
+      in: path
+      required: true
+      schema:
+        type: string
+    productId:
+      name: productId
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
-    ProductId:
-      type: string
-    TableId:
-      type: string
-    CreateBillRequest:
+    Table:
       type: object
       properties:
-        amount:
-          type: number
-        date:
+        id:
           type: string
-          format: date
-        tableId:
-          "$ref": "#/components/schemas/TableId"
-          description: ID of the table associated with this bill
-        products:
-          type: array
-          items:
-            type: object
-            properties:
-              productId:
-                "$ref": "#/components/schemas/ProductId"
-              quantity:
-                type: integer
-      required:
-      - amount
-      - date
-      - tableId
-      - products
+        number:
+          type: integer
     CreateTableRequest:
       type: object
       properties:
         number:
           type: integer
       required:
-      - number
-    CreateProductRequest:
+        - number
+    UpdateTableRequest:
       type: object
       properties:
-        name:
-          type: string
-        price:
-          type: number
-      required:
-      - name
-      - price
+        number:
+          type: integer
     Bill:
       type: object
       properties:
@@ -511,6 +619,8 @@ components:
         date:
           type: string
           format: date
+        tableId:
+          type: string
         products:
           type: array
           items:
@@ -520,7 +630,93 @@ components:
                 type: string
               quantity:
                 type: integer
+    CreateBillRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
         tableId:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+              quantity:
+                type: integer
+      required:
+        - amount
+        - date
+        - tableId
+        - products
+    UpdateBillRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+        date:
+          type: string
+          format: date
+        tableId:
+          type: string
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: string
+              quantity:
+                type: integer
+    SplitBillRequest:
+      type: object
+      properties:
+        splits:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            properties:
+              products:
+                type: array
+                minItems: 1
+                items:
+                  type: object
+                  properties:
+                    productId:
+                      type: string
+                    quantity:
+                      type: integer
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+    CreateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      required:
+        - name
+    UpdateCategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
           type: string
     Product:
       type: object
@@ -531,18 +727,16 @@ components:
           type: string
         price:
           type: number
-    Table:
+    CreateProductRequest:
       type: object
       properties:
-        id:
+        name:
           type: string
-        number:
-          type: integer
-    UpdateTableRequest:
-      type: object
-      properties:
-        number:
-          type: integer
+        price:
+          type: number
+      required:
+        - name
+        - price
     UpdateProductRequest:
       type: object
       properties:
@@ -550,57 +744,6 @@ components:
           type: string
         price:
           type: number
-    UpdateBillRequest:
-      type: object
-      properties:
-        amount:
-          type: number
-        date:
-          type: string
-          format: date
-        products:
-          type: array
-          items:
-            type: object
-            properties:
-              productId:
-                type: string
-              quantity:
-                type: integer
-        tableId:
-          type: string
-    ProductSplit:
-      type: object
-      required:
-        - productId
-        - quantity
-      properties:
-        productId:
-          type: string
-        quantity:
-          type: integer
-          minimum: 1
-    Split:
-      type: object
-      required:
-        - products
-      properties:
-        products:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/ProductSplit'
-
-    SplitBillRequest:
-      type: object
-      required:
-        - splits
-      properties:
-        splits:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/Split'
     Error:
       type: object
       properties:

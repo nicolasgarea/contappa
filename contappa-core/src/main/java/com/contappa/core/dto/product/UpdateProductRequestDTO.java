@@ -1,4 +1,4 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.product;
 
 import jakarta.validation.constraints.NotNull;
 

@@ -1,22 +1,19 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.CreateProductRequestDTO;
-import com.contappa.core.dto.ProductDTO;
-import com.contappa.core.dto.UpdateProductRequestDTO;
-import com.contappa.core.exceptions.ProductNotFoundException;
+import com.contappa.core.dto.product.CreateProductRequestDTO;
+import com.contappa.core.dto.product.ProductDTO;
+import com.contappa.core.dto.product.UpdateProductRequestDTO;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;
 import com.contappa.core.repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

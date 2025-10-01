@@ -1,7 +1,5 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.table;
 
-import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 public class TablesDTO {

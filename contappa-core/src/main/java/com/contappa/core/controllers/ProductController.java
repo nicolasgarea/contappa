@@ -1,8 +1,9 @@
 package com.contappa.core.controllers;
 
-import com.contappa.core.dto.CreateProductRequestDTO;
-import com.contappa.core.dto.ProductDTO;
-import com.contappa.core.dto.UpdateProductRequestDTO;
+
+import com.contappa.core.dto.product.CreateProductRequestDTO;
+import com.contappa.core.dto.product.ProductDTO;
+import com.contappa.core.dto.product.UpdateProductRequestDTO;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.services.ProductService;
 import jakarta.validation.Valid;

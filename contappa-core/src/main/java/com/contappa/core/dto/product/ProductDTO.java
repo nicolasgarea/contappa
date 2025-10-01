@@ -1,16 +1,34 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.product;
+
 
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class CreateProductRequestDTO {
+public class ProductDTO {
+    private UUID id;
     private String name;
     private BigDecimal price;
-    private String imageUrl;
     @NotNull
     private UUID categoryId;
+    private String imageUrl;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public String getName() {
         return name;
@@ -28,15 +46,6 @@ public class CreateProductRequestDTO {
         this.price = price;
     }
 
-
-    public UUID getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(UUID categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
@@ -44,4 +53,6 @@ public class CreateProductRequestDTO {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+
 }

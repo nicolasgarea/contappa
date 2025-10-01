@@ -1,6 +1,6 @@
 package com.contappa.core;
 
-import com.contappa.core.dto.ProductDTO;
+import com.contappa.core.dto.product.ProductDTO;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;
 import org.junit.jupiter.api.BeforeEach;

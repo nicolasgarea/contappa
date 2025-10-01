@@ -1,4 +1,4 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.bill;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

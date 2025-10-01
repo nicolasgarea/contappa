@@ -1,6 +1,6 @@
-package com.contappa.core;
+package com.contappa.core.mappers;
 
-import com.contappa.core.dto.BillDTO;
+import com.contappa.core.dto.bill.BillDTO;
 import com.contappa.core.mappers.BillMapper;
 import com.contappa.core.models.Bill;
 import com.contappa.core.models.BillProduct;

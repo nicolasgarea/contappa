@@ -1,8 +1,6 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.table;
 
-import java.util.List;
-
-public class CreateTableRequestDTO {
+public class UpdateTableRequestDTO {
     private int number;
 
     public int getNumber() {

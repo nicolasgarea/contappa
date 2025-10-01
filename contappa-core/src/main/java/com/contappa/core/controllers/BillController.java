@@ -1,9 +1,10 @@
 package com.contappa.core.controllers;
 
-import com.contappa.core.dto.BillDTO;
-import com.contappa.core.dto.CreateBillRequestDTO;
-import com.contappa.core.dto.SplitBillRequestDTO;
-import com.contappa.core.dto.UpdateBillRequestDTO;
+
+import com.contappa.core.dto.bill.BillDTO;
+import com.contappa.core.dto.bill.CreateBillRequestDTO;
+import com.contappa.core.dto.bill.SplitBillRequestDTO;
+import com.contappa.core.dto.bill.UpdateBillRequestDTO;
 import com.contappa.core.exceptions.BillNotFoundException;
 import com.contappa.core.services.BillService;
 import org.springframework.http.HttpStatus;

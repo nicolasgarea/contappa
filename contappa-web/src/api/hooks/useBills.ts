@@ -1,49 +1,64 @@
-import client from "@api/client/client";
-import { CreateBillRequest, UpdateBillRequest, Bill } from "@api/__generated__";
-import { BillId } from "@api/types/bill";
-import { createBill, updateBill, deleteBill, getBills, getBillById } from "@api/client/services/bills";
+import { CreateBillRequest, UpdateBillRequest, Bill, SplitBillRequest } from "@api/__generated__";
+import { BillId } from "@api/types/aliases";
+import { createBill, updateBill, deleteBill, getBills, getBillById, splitBill } from "@api/client/services/bills";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import queryClient from "@api/queryClient";
+import { TableId } from "@api/types/aliases";
 
 interface UpdateBillInput {
     billId: BillId
     billData: UpdateBillRequest;
 }
 
-export const useBills = () => {
+export const useBills = (tableId: TableId) => {
     return useQuery<Bill[], Error>({
-        queryKey: ["bills"],
-        queryFn: () => getBills()
+        queryKey: ["tables", tableId, "bills"],
+        queryFn: () => getBills(tableId),
     });
 }
 
-export const useBillById = (billId: BillId) => {
+export const useBillById = (tableId: TableId, billId: BillId) => {
     return useQuery<Bill, Error>({
-        queryKey: ["bills", billId],
-        queryFn: () => getBillById(billId),
+        queryKey: ["tables", tableId, "bills", billId],
+        queryFn: () => getBillById(tableId, billId),
     });
 }
 
-export const useCreateBill = () => {
+export const useCreateBill = (tableId: TableId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        (billData: CreateBillRequest) => createBill(billData),
+        (billData: CreateBillRequest) => createBill(tableId, billData),
         {
-            onSuccess: () => {
-                queryClient.invalidateQueries(["bills"]);
-            }
+            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
         }
     );
 }
 
-export const useUpdateBill = () => {
+export const useUpdateBill = (tableId: TableId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        ({ billId, billData }: UpdateBillInput) => updateBill(billId, billData),
+        ({ billId, billData }: UpdateBillInput) => updateBill(tableId, billId, billData),
         {
-            onSuccess: () => {
-                queryClient.invalidateQueries(["bills"]);
-            }
+            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
         }
-    )
+    );
+}
+
+export const useDeleteBill = (tableId: TableId) => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        (billId: BillId) => deleteBill(tableId, billId),
+        {
+            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+        }
+    );
+}
+
+export const useSplitBill = (tableId: TableId) => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        ({ billId, splitData }: { billId: BillId; splitData: SplitBillRequest }) => splitBill(tableId, billId, splitData),
+        {
+            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+        }
+    );
 }

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { CreateProductRequest, Product, ProductId, UpdateProductRequest } from "@api/__generated__"
+import { CreateProductRequest, Product, UpdateProductRequest } from "@api/__generated__"
 import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "@api/client/services/products"
+import { ProductId, CategoryId } from "@api/types/aliases"
 
 interface UpdateProductInput {
     productId: ProductId
@@ -8,51 +9,51 @@ interface UpdateProductInput {
 }
 
 
-export const useProducts = () => {
+export const useProducts = (categoryId: CategoryId) => {
     return useQuery<Product[], Error>({
-        queryKey: ["products"],
-        queryFn: () => getProducts(),
+        queryKey: ["categories", categoryId, "products"],
+        queryFn: () => getProducts(categoryId),
     });
 }
 
-export const useProductById = (productId: ProductId) => {
+export const useProductById = (categoryId: CategoryId, productId: ProductId) => {
     return useQuery<Product, Error>({
-        queryKey: ["products", productId],
-        queryFn: () => getProductById(productId),
+        queryKey: ["categories", categoryId, "products", productId],
+        queryFn: () => getProductById(categoryId, productId),
     });
 }
 
-export const useCreateProduct = () => {
+export const useCreateProduct = (categoryId: CategoryId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        (productData: CreateProductRequest) => createProduct(productData),
+        (productData: CreateProductRequest) => createProduct(categoryId, productData),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(["products"]);
+                queryClient.invalidateQueries(["categories", categoryId, "products"]);
             }
         }
     )
 }
 
-export const useUpdateProduct = () => {
+export const useUpdateProduct = (categoryId: CategoryId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        ({ productId, productData }: UpdateProductInput) => updateProduct(productId, productData),
+        ({ productId, productData }: UpdateProductInput) => updateProduct(categoryId, productId, productData),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(["products"]);
+                queryClient.invalidateQueries(["categories", categoryId, "products"]);
             }
         }
     )
 }
 
-export const useDeleteProduct = () => {
+export const useDeleteProduct = (categoryId: CategoryId) => {
     const queryClient = useQueryClient();
     return useMutation(
-        (productId: ProductId) => deleteProduct(productId),
+        (productId: ProductId) => deleteProduct(categoryId, productId),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(["products"]);
+                queryClient.invalidateQueries(["categories", categoryId, "products"]);
             }
         }
     )

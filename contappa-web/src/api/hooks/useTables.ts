@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateTableRequest, Table, TableId, UpdateTableRequest } from "@api/__generated__"
+import { CreateTableRequest, Table, UpdateTableRequest } from "@api/__generated__"
 import { getTables, getTableById, createTable, updateTable, deleteTable } from "@api/client/services/tables";
+import { TableId } from "@api/types/aliases";
 
 interface UpdateTableInput {
     tableId: TableId;

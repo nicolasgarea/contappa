@@ -9,7 +9,16 @@ public class CreateBillRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
     private UUID tableId;
+    private Boolean paid;
     private List<ProductQuantity> products;
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
 
     public BigDecimal getAmount() {
         return amount;

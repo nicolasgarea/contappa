@@ -27,6 +27,9 @@ public class Bill {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "paid")
+    private boolean paid;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -43,6 +46,14 @@ public class Bill {
 
     public Bill(){
 
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Tables table) {

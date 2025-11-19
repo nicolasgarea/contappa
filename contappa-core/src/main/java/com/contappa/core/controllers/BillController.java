@@ -60,6 +60,17 @@ public class BillController {
         return new ResponseEntity<>(splitBills, HttpStatus.CREATED);
     }
 
+    @PostMapping("/{id}/pay")
+    public ResponseEntity<BillDTO> payBill(@PathVariable UUID tableId, @PathVariable UUID id) {
+        BillDTO existing = billService.findById(id);
+        if (!existing.getTableId().equals(tableId)) {
+            throw new BillNotFoundException("Bill not found in this table.");
+        }
+        BillDTO paidBill = billService.markAsPaid(id);
+        return ResponseEntity.ok(paidBill);
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBill(@PathVariable UUID tableId, @PathVariable UUID id){
         BillDTO existing = billService.findById(id);

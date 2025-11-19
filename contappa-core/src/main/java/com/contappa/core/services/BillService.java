@@ -115,6 +115,10 @@ public class BillService {
             existingBill.setAmount(billDTO.getAmount());
         }
 
+        if (billDTO.getPaid() != null) {
+            existingBill.setPaid(billDTO.getPaid());
+        }
+
         return billMapper.toBillDTO(billRepository.save(existingBill));
     }
 
@@ -152,12 +156,22 @@ public class BillService {
             newBill.setAmount(amount);
             newBill.setCreatedAt(LocalDateTime.now());
             newBill.setDate(LocalDate.now());
+            newBill.setPaid(false);
 
             Bill savedBill = billRepository.save(newBill);
             splitBills.add(billMapper.toBillDTO(savedBill));
         }
 
         return splitBills;
+    }
+
+    @Transactional
+    public BillDTO markAsPaid(UUID id) {
+        Bill bill = billRepository.findById(id)
+            .orElseThrow(() -> new BillNotFoundException("Bill not found."));
+        bill.setPaid(true);
+        bill.setUpdatedAt(LocalDateTime.now());
+        return billMapper.toBillDTO(billRepository.save(bill));
     }
 
     @Transactional

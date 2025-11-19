@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import RootPage from '@pages/RootPage'
+import RootPage from '@pages/RootPage/RootPage'
 
 const router = createBrowserRouter([
   {

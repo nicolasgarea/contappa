@@ -45,13 +45,17 @@ export default function RootPage() {
 
     <HeadContainer>
       <h1>Table Management</h1>
-      <Button label={showForm ? "Cancel" : "Create Table"} onClick={() => setShowForm((prev: boolean) => !prev)} />
+      <Button label={"Create Table"} onClick={() => setShowForm((prev: boolean) => !prev)} />
     </HeadContainer>
     <FormContainer>
       {showForm && <TableForm onClose={() => setShowForm(false)} />}
     </FormContainer>
     <FlexContainer>
-      {tables!.map((table: any) => <TableCard key={table.id} number={table.number} />)}
+      {tables
+        ?.sort((a, b) => a.number! - b.number!)
+        .map((table) => (
+          <TableCard key={table.id} number={table.number!} />
+        ))}
     </FlexContainer>
   </div >
 }

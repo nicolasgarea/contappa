@@ -5,6 +5,7 @@ export type Bill = {
     amount?: number;
     date?: string;
     tableId?: string;
+    paid?: boolean;
     products?: Array<{
         productId?: string;
         quantity?: number;
@@ -35,6 +36,7 @@ export type CreateCategoryRequest = {
 export type CreateProductRequest = {
     name: string;
     price: number;
+    imageUrl?: string;
 };
 
 export type CreateTableRequest = {
@@ -58,6 +60,7 @@ export type Product = {
     id?: string;
     name?: string;
     price?: number;
+    imageUrl?: string;
 };
 
 export type SplitBillRequest = {
@@ -72,6 +75,11 @@ export type SplitBillRequest = {
 export type Table = {
     id?: string;
     number?: number;
+    activeBill?: {
+        id?: string;
+        amount?: number;
+        paid?: boolean;
+    } | null;
 };
 
 export type UpdateBillRequest = {
@@ -92,6 +100,7 @@ export type UpdateCategoryRequest = {
 export type UpdateProductRequest = {
     name?: string;
     price?: number;
+    imageUrl?: string;
 };
 
 export type UpdateTableRequest = {

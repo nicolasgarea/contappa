@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 type TableCardProps = {
-    number: string;
+    number: number;
 };
 
 const StyledCard = styled.div`

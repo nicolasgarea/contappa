@@ -597,6 +597,16 @@ components:
           type: string
         number:
           type: integer
+        activeBill:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+            amount:
+              type: number
+            paid:
+              type: boolean
     CreateTableRequest:
       type: object
       properties:
@@ -621,6 +631,8 @@ components:
           format: date
         tableId:
           type: string
+        paid:
+          type: boolean
         products:
           type: array
           items:
@@ -727,6 +739,8 @@ components:
           type: string
         price:
           type: number
+        imageUrl:
+          type: string
     CreateProductRequest:
       type: object
       properties:
@@ -734,6 +748,8 @@ components:
           type: string
         price:
           type: number
+        imageUrl:
+          type: string
       required:
         - name
         - price
@@ -744,6 +760,8 @@ components:
           type: string
         price:
           type: number
+        imageUrl:
+          type: string
     Error:
       type: object
       properties:

@@ -87,6 +87,14 @@ export default function TableForm({ onClose }: TableFormProps) {
     if (error) return <div>{error.message}</div>
 
     const onSubmit: SubmitHandler<CreateTableRequest> = (data) => {
+
+        const table = tables.filter((table) => table.number === data.number)
+
+        if (table) {
+            alert("A table with this number already exists");
+            return;
+        }
+
         createMutation.mutate(data, {
             onSuccess: () => {
                 reset();

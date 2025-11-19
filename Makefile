@@ -41,3 +41,7 @@ ci-tests: db_up
 	$(MAKE) wait-for-app
 	$(MAKE) integration-tests
 	docker compose -f docker/docker-compose.yml down -v
+
+backend_rebuild:
+	docker compose -f docker/docker-compose.yml build backend
+	docker compose -f docker/docker-compose.yml up -d backend

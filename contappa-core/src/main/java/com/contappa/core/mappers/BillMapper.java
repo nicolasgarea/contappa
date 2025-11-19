@@ -16,6 +16,7 @@ public interface BillMapper {
 
     @Mapping(source = "table.id", target = "tableId")
     @Mapping(source = "billProducts", target = "products")
+    @Mapping(source = "paid", target = "paid")
     BillDTO toBillDTO(Bill bill);
 
     default List<BillDTO.ProductQuantity> mapBillProducts(List<BillProduct> billProducts) {
@@ -36,6 +37,7 @@ public interface BillMapper {
         bill.setId(billDTO.getId());
         bill.setAmount(billDTO.getAmount());
         bill.setDate(billDTO.getDate());
+        bill.setPaid(billDTO.isPaid());
         if (billDTO.getTableId() != null) {
             bill.setTable(new com.contappa.core.models.Tables());
             bill.getTable().setId(billDTO.getTableId());
@@ -60,6 +62,7 @@ public interface BillMapper {
         Bill bill = new Bill();
         bill.setAmount(createBillRequestDTO.getAmount());
         bill.setDate(createBillRequestDTO.getDate());
+        bill.setPaid(false);
         if (createBillRequestDTO.getTableId() != null) {
             bill.setTable(new com.contappa.core.models.Tables());
             bill.getTable().setId(createBillRequestDTO.getTableId());

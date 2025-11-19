@@ -11,6 +11,7 @@ public class BillDTO {
     private BigDecimal amount;
     private LocalDate date;
     private List<ProductQuantity> products;
+    private boolean paid;
     private UUID tableId;
 
     public UUID getTableId() {
@@ -23,6 +24,14 @@ public class BillDTO {
 
     public UUID getId() {
         return id;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public void setId(UUID id) {

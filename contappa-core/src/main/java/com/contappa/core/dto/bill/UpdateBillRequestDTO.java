@@ -10,7 +10,16 @@ public class UpdateBillRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
     private UUID tableId;
+    private Boolean paid;
     private List<UpdateBillRequestDTO.ProductQuantity> products;
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
 
     public BigDecimal getAmount() {
         return amount;

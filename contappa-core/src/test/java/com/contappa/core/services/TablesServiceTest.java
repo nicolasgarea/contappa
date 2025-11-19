@@ -4,8 +4,10 @@ package com.contappa.core.services;
 import com.contappa.core.dto.table.CreateTableRequestDTO;
 import com.contappa.core.dto.table.TablesDTO;
 import com.contappa.core.dto.table.UpdateTableRequestDTO;
+import com.contappa.core.mappers.BillMapper;
 import com.contappa.core.mappers.TablesMapper;
 import com.contappa.core.models.Tables;
+import com.contappa.core.repositories.BillRepository;
 import com.contappa.core.repositories.TablesRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,11 @@ public class TablesServiceTest {
     public void testCreate() {
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
         TablesMapper tablesMapper = Mockito.mock(TablesMapper.class);
-        TablesService tablesService = new TablesService(tablesRepository, tablesMapper);
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+
+        TablesService tablesService = new TablesService(tablesRepository, tablesMapper, billRepository, billMapper);
+
 
         CreateTableRequestDTO createDTO = new CreateTableRequestDTO();
         createDTO.setNumber(5);
@@ -48,7 +54,10 @@ public class TablesServiceTest {
     public void testFindById(){
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
         TablesMapper tablesMapper = Mockito.mock(TablesMapper.class);
-        TablesService tablesService = new TablesService(tablesRepository, tablesMapper);
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+
+        TablesService tablesService = new TablesService(tablesRepository, tablesMapper, billRepository, billMapper);
 
         UUID id = UUID.randomUUID();
         Tables table = new Tables();
@@ -68,7 +77,10 @@ public class TablesServiceTest {
     public void testListAll(){
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
         TablesMapper tablesMapper = Mockito.mock(TablesMapper.class);
-        TablesService tablesService = new TablesService(tablesRepository, tablesMapper);
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+
+        TablesService tablesService = new TablesService(tablesRepository, tablesMapper, billRepository, billMapper);
 
         Tables table = new Tables();
         TablesDTO tableDTO = new TablesDTO();
@@ -88,7 +100,10 @@ public class TablesServiceTest {
     public void testUpdate(){
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
         TablesMapper tablesMapper = Mockito.mock(TablesMapper.class);
-        TablesService tablesService = new TablesService(tablesRepository, tablesMapper);
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+
+        TablesService tablesService = new TablesService(tablesRepository, tablesMapper, billRepository, billMapper);
 
         UUID id = UUID.randomUUID();
         UpdateTableRequestDTO updateDTO = new UpdateTableRequestDTO();
@@ -114,7 +129,9 @@ public class TablesServiceTest {
     @Test
     public void testDelete(){
         TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
-        TablesService tablesService = new TablesService(tablesRepository, null);
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+        TablesService tablesService = new TablesService(tablesRepository, null, billRepository, billMapper);
         Tables table = new Tables();
         UUID id = UUID.randomUUID();
 

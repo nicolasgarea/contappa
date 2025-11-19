@@ -4,21 +4,35 @@ import Button from "@components/Button/Button"
 import styled from "styled-components";
 import { useTables } from "@api/hooks/useTables";
 import { useState } from "react";
+import TableForm from "./components/TableForm";
 
 
 
-const ButtonContainer = styled.div`
+const HeadContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-  margin: 5rem 7rem;
-  `;
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-  padding: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  font-family: sans-serif;
+  margin: 2rem 5rem 0rem 4rem;
+  margin-bottom: 0;
 `;
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0;
+  justify-content: flex-start;
+  max-width: 1600px;
+  margin: 0 auto;
+`;
+
+const FormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 5rem;
+  align-items: center;
+`
 
 export default function RootPage() {
   const { data: tables, isLoading, error } = useTables();
@@ -29,11 +43,15 @@ export default function RootPage() {
   return <div>
     <Navbar />
 
-    <ButtonContainer>
+    <HeadContainer>
+      <h1>Table Management</h1>
       <Button label={showForm ? "Cancel" : "Create Table"} onClick={() => setShowForm((prev: boolean) => !prev)} />
-    </ButtonContainer>
-    <GridContainer>
+    </HeadContainer>
+    <FormContainer>
+      {showForm && <TableForm onClose={() => setShowForm(false)} />}
+    </FormContainer>
+    <FlexContainer>
       {tables!.map((table: any) => <TableCard key={table.id} number={table.number} />)}
-    </GridContainer>
+    </FlexContainer>
   </div >
 }

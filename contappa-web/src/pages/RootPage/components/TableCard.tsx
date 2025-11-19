@@ -1,4 +1,4 @@
-import RestaurantIcon from '@mui/icons-material/Restaurant';
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
 import styled from 'styled-components';
 
 
@@ -8,12 +8,12 @@ type TableCardProps = {
 
 const StyledCard = styled.div`
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 15px;
     padding: 1rem;
     margin: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 30vh;
-    width: 15vw;
+    height: 230px;
+    width: 230px;
     font-weight: bold;
     font-size: 1.4rem;
     font-family: 'Inter', sans-serif;
@@ -23,7 +23,7 @@ const StyledCard = styled.div`
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.1s ease; /* suaviza la animación */
+    transition: all 0.1s ease;
 
     &:hover {
         transform: translateY(-2px);
@@ -31,14 +31,14 @@ const StyledCard = styled.div`
     }
 `;
 
-const SyledRestaurantIcon = styled(RestaurantIcon)`
-    font-size: 4rem !important;
+const SyledRestaurantIcon = styled(RestaurantMenuIcon)`
+    font-size: 6rem !important;
 `;
 
 const StyledTable = styled.div`
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 1.5rem;
+    left: 1.5rem;
 `;
 
 export default function TableCard({ number }: TableCardProps) {

@@ -7,7 +7,7 @@ type ItemProps = {
 };
 
 const ItemButton = styled.button`
- display: flex;
+  display: flex;
   align-items: center;
   gap: 0.5em;
   padding: 0.5em 1em;
@@ -16,7 +16,7 @@ const ItemButton = styled.button`
   border: 2px solid transparent;
   border-radius: 0.9em;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   flex-wrap: wrap; 
 `;

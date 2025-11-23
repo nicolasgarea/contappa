@@ -31,6 +31,12 @@ public class BillController {
         return new ResponseEntity<>(billDTO, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<BillDTO>> getBillsForTable(@PathVariable UUID tableId) {
+        List<BillDTO> bills = billService.findByTableId(tableId);
+        return ResponseEntity.ok(bills);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<BillDTO> getBillById(@PathVariable UUID tableId, @PathVariable UUID id){
         BillDTO billDTO = billService.findById(id);

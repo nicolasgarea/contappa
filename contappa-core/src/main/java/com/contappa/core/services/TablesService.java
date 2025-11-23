@@ -1,5 +1,6 @@
 package com.contappa.core.services;
 
+import com.contappa.core.dto.bill.BillDTO;
 import com.contappa.core.dto.table.CreateTableRequestDTO;
 import com.contappa.core.dto.table.TablesDTO;
 import com.contappa.core.dto.table.UpdateTableRequestDTO;
@@ -36,18 +37,18 @@ public class TablesService {
     public TablesDTO create(CreateTableRequestDTO dto) {
         Tables table = tablesMapper.toTables(dto);
         Tables saved = tablesRepository.save(table);
-        return mapWithActiveBill(saved);
+        return mapWithActiveBills(saved);
     }
 
     public TablesDTO findById(UUID id) {
         Tables table = tablesRepository.findById(id)
             .orElseThrow(() -> new TableNotFoundException("Table not found with id: " + id));
-        return mapWithActiveBill(table);
+        return mapWithActiveBills(table);
     }
 
     public List<TablesDTO> listAll() {
         return tablesRepository.findAll().stream()
-            .map(this::mapWithActiveBill)
+            .map(this::mapWithActiveBills)
             .collect(Collectors.toList());
     }
 
@@ -57,7 +58,7 @@ public class TablesService {
 
         existing.setNumber(dto.getNumber());
         Tables saved = tablesRepository.save(existing);
-        return mapWithActiveBill(saved);
+        return mapWithActiveBills(saved);
     }
 
     public void delete(UUID id) {
@@ -66,10 +67,13 @@ public class TablesService {
         tablesRepository.delete(existing);
     }
 
-    private TablesDTO mapWithActiveBill(Tables table) {
+    private TablesDTO mapWithActiveBills(Tables table) {
         TablesDTO dto = tablesMapper.toTablesDTO(table);
-        billRepository.findFirstByTableIdAndPaidFalseOrderByDateDesc(table.getId())
-            .ifPresent(bill -> dto.setActiveBill(billMapper.toBillDTO(bill)));
+        List<BillDTO> activeBills = billRepository.findByTableIdAndPaidFalseOrderByDateDesc(table.getId())
+            .stream()
+            .map(billMapper::toBillDTO)
+            .collect(Collectors.toList());
+        dto.setActiveBills(activeBills);
         return dto;
     }
 }

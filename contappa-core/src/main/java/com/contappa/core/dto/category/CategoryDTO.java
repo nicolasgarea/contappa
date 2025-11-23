@@ -1,8 +1,14 @@
-package com.contappa.core.dto;
+package com.contappa.core.dto.category;
 
-public class CreateCategoryRequestDTO {
+import java.util.UUID;
+
+public class CategoryDTO {
+    private UUID id;
     private String name;
     private String description;
+
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

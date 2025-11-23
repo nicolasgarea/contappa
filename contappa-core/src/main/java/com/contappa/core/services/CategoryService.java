@@ -1,8 +1,8 @@
 package com.contappa.core.services;
 
-import com.contappa.core.dto.CategoryDTO;
-import com.contappa.core.dto.CreateCategoryRequestDTO;
-import com.contappa.core.dto.UpdateCategoryRequestDTO;
+import com.contappa.core.dto.category.CategoryDTO;
+import com.contappa.core.dto.category.CreateCategoryRequestDTO;
+import com.contappa.core.dto.category.UpdateCategoryRequestDTO;
 import com.contappa.core.exceptions.CategoryNotFoundException;
 import com.contappa.core.mappers.CategoryMapper;
 import com.contappa.core.models.Category;

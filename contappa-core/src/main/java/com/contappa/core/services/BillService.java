@@ -70,6 +70,15 @@ public class BillService {
         return billMapper.toBillDTO(billSaved);
     }
 
+    public List<BillDTO> findByTableId(UUID tableId) {
+        List<Bill> bills = billRepository.findByTableId(tableId);
+        List<BillDTO> billDTOs = new ArrayList<>();
+        for (Bill bill : bills) {
+            billDTOs.add(billMapper.toBillDTO(bill));
+        }
+        return billDTOs;
+    }
+
     public BillDTO findById(UUID id){
         Bill bill = billRepository.findById(id).orElseThrow(() -> new BillNotFoundException("Bill not found."));
         return billMapper.toBillDTO(bill);

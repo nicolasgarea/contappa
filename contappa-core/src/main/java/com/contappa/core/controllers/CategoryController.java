@@ -1,7 +1,7 @@
 package com.contappa.core.controllers;
-import com.contappa.core.dto.CategoryDTO;
-import com.contappa.core.dto.CreateCategoryRequestDTO;
-import com.contappa.core.dto.UpdateCategoryRequestDTO;
+import com.contappa.core.dto.category.CategoryDTO;
+import com.contappa.core.dto.category.CreateCategoryRequestDTO;
+import com.contappa.core.dto.category.UpdateCategoryRequestDTO;
 import com.contappa.core.services.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

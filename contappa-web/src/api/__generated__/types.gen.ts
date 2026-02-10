@@ -57,6 +57,7 @@ export type ParameterproductId = string;
 export type ParametertableId = string;
 
 export type Product = {
+    categoryId: string | undefined;
     id?: string;
     name?: string;
     price?: number;
@@ -75,17 +76,24 @@ export type SplitBillRequest = {
 export type Table = {
     id?: string;
     number?: number;
-    activeBill?: {
+    activeBills?: Array<{
         id?: string;
         amount?: number;
         paid?: boolean;
-    } | null;
+        date?: string;
+        tableId?: string;
+        products?: Array<{
+            productId?: string;
+            quantity?: number;
+        }>;
+    }> | null;
 };
 
 export type UpdateBillRequest = {
     amount?: number;
     date?: string;
     tableId?: string;
+    paid?: boolean;
     products?: Array<{
         productId?: string;
         quantity?: number;

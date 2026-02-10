@@ -7,8 +7,15 @@ const productsEndpoint = (categoryId: CategoryId) =>
 const productsByIdEndpoint = (categoryId: CategoryId, productId: ProductId) =>
     `categories/${categoryId}/products/${productId}`;
 
-export const getProducts = (categoryId: CategoryId): Promise<Product[]> =>
-    client.get<Product[]>(productsEndpoint(categoryId)).then((response) => response.data);
+export const getProducts = (categoryId: CategoryId): Promise<Product[]> => {
+    const url = productsEndpoint(categoryId);
+    console.log("Fetching products from URL:", url);
+
+    return client.get<Product[]>(url).then((response) => {
+        console.log("Products received:", response.data);
+        return response.data;
+    });
+};
 
 export const getProductById = (categoryId: CategoryId, productId: ProductId): Promise<Product> =>
     client.get<Product>(productsByIdEndpoint(categoryId, productId)).then(response => response.data);

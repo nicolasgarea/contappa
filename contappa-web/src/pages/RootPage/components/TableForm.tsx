@@ -15,7 +15,7 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 5%;
+  padding-top: 6rem;
   z-index: 1000;
 `;
 
@@ -27,8 +27,8 @@ const FormContainer = styled.form`
   border: 1px solid #ccc;
   border-radius: 12px;
   background-color: #fff;
-  width: 90%;
-  max-width: 500px;
+  width: 100%;
+  max-width: 300px;
   font-family: sans-serif;
 
   h1 {
@@ -69,57 +69,54 @@ const Input = styled.input`
 `;
 
 type TableFormProps = {
-    onClose?: () => void;
+  onClose?: () => void;
 };
 
 export default function TableForm({ onClose }: TableFormProps) {
-    const { register, handleSubmit, reset } = useForm<CreateTableRequest>()
+  const { register, handleSubmit, reset } = useForm<CreateTableRequest>()
 
-    const { data: tables, isLoading, error } = useTables();
+  const { data: tables, isLoading, error } = useTables();
 
-    const createMutation = useCreateTable();
+  const createMutation = useCreateTable();
 
-    const deleteMutation = useDeleteTable();
 
-    const updateMutation = useUpdateTable();
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>{error.message}</div>
 
-    if (isLoading) return <div>Loading...</div>
-    if (error) return <div>{error.message}</div>
+  const onSubmit: SubmitHandler<CreateTableRequest> = (data) => {
 
-    const onSubmit: SubmitHandler<CreateTableRequest> = (data) => {
+    const table = tables.some((table) => table.number === data.number)
 
-        const table = tables.filter((table) => table.number === data.number)
+    if (table) {
+      alert("A table with this number already exists");
+      return;
+    }
 
-        if (table) {
-            alert("A table with this number already exists");
-            return;
-        }
+    createMutation.mutate(data, {
+      onSuccess: () => {
+        reset();
+        onClose?.();
+      }
+    });
+  };
 
-        createMutation.mutate(data, {
-            onSuccess: () => {
-                reset();
-                onClose?.();
-            }
-        });
-    };
-
-    return (
-        <Overlay>
-            <FormContainer onSubmit={handleSubmit(onSubmit)}  >
-                <h1>Create a new table</h1>
-                <Row>
-                    <Input
-                        type="number"
-                        {...register("number", { required: true, min: 1, valueAsNumber: true })}
-                        placeholder="Enter table number"
-                    />
-                </Row>
-                <ButtonRow>
-                    <Button typeButton="button" label="Cancel" onClick={onClose} color="red" />
-                    <Button typeButton="submit" label="Create table" />
-                </ButtonRow>
-            </FormContainer>
-        </Overlay>
-    )
+  return (
+    <Overlay>
+      <FormContainer onSubmit={handleSubmit(onSubmit)}  >
+        <h1>Create a new table</h1>
+        <Row>
+          <Input
+            type="number"
+            {...register("number", { required: true, min: 1, valueAsNumber: true })}
+            placeholder="Enter a table number"
+          />
+        </Row>
+        <ButtonRow>
+          <Button typeButton="button" label="Cancel" onClick={onClose} color="#E63F39" />
+          <Button typeButton="submit" label="Create table" color="#df8826ff" />
+        </ButtonRow>
+      </FormContainer>
+    </Overlay>
+  )
 
 }

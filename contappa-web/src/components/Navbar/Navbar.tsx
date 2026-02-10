@@ -4,6 +4,7 @@ import Title from './components/Title';
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavbarContainer = styled.nav`
   display: flex;
@@ -29,17 +30,31 @@ const NavItems = styled.div`
   flex-wrap: wrap; 
 `;
 
-
 export default function Navbar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    { label: "Tables", icon: <TableRestaurantIcon />, path: "/tables" },
+    { label: "Products", icon: <RestaurantIcon />, path: "/products" },
+    { label: "Bills", icon: <RequestQuoteIcon />, path: "/bills" },
+  ];
+
   return (
     <NavbarContainer>
       <TitleWrapper>
         <Title />
       </TitleWrapper>
       <NavItems>
-        <Item item="Tables" icon={<TableRestaurantIcon />} />
-        <Item item="Products" icon={<RestaurantIcon />} />
-        <Item item="Bills" icon={<RequestQuoteIcon />} />
+        {navItems.map(({ label, icon, path }) => (
+          <Item
+            key={label}
+            item={label}
+            icon={icon}
+            onClick={() => navigate(path)}
+            active={location.pathname.startsWith(path)}
+          />
+        ))}
       </NavItems>
     </NavbarContainer>
   );

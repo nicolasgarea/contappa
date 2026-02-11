@@ -1,1 +1,3 @@
-export const root = '/'
+export const root = '/tables'
+
+export const tableDetail = '/tables/:id'

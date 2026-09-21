@@ -17,15 +17,20 @@ public interface BillMapper {
     @Mapping(source = "table.id", target = "tableId")
     @Mapping(source = "billProducts", target = "products")
     @Mapping(source = "paid", target = "paid")
+    @Mapping(source = "createdAt", target = "openedAt")
+    @Mapping(source = "updatedAt", target = "lastOrderAt")
     BillDTO toBillDTO(Bill bill);
 
     default List<BillDTO.ProductQuantity> mapBillProducts(List<BillProduct> billProducts) {
         if (billProducts == null) return null;
         return billProducts.stream()
             .map(bp -> {
+                Product product = bp.getProduct();
                 BillDTO.ProductQuantity pq = new BillDTO.ProductQuantity();
-                pq.setProductId(bp.getProduct().getId().toString());
+                pq.setProductId(product.getId().toString());
+                pq.setName(product.getName());
                 pq.setQuantity(bp.getQuantity());
+                pq.setUnitPrice(bp.getUnitPrice() != null ? bp.getUnitPrice() : product.getPrice());
                 return pq;
             })
             .toList();
@@ -49,6 +54,7 @@ public interface BillMapper {
                 product.setId(UUID.fromString(pq.getProductId()));
                 bp.setProduct(product);
                 bp.setQuantity(pq.getQuantity());
+                bp.setUnitPrice(pq.getUnitPrice());
                 bp.setBill(bill);
                 return bp;
             }).toList();

@@ -24,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -52,6 +54,7 @@ public class BillService {
         BigDecimal amount = BigDecimal.ZERO;
         Bill bill = new Bill();
         bill.setTable(table);
+        bill.setGuests(request.getGuests());
         for (CreateBillRequestDTO.ProductQuantity productQuantity : productsList) {
             Product product = productRepository.findById(productQuantity.getProductId()).orElseThrow(() -> new ProductNotFoundException("Product not found."));
             BillProduct billProduct = new BillProduct();
@@ -64,7 +67,7 @@ public class BillService {
         }
         bill.setAmount(amount);
         bill.setBillProducts(billProducts);
-        bill.setCreatedAt(LocalDateTime.now());
+        bill.setCreatedAt(OffsetDateTime.now());
         bill.setDate(LocalDate.now());
         Bill billSaved = billRepository.save(bill);
         return billMapper.toBillDTO(billSaved);
@@ -89,7 +92,9 @@ public class BillService {
         Bill existingBill = billRepository.findById(id)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
 
-        existingBill.setDate(billDTO.getDate());
+        if (billDTO.getDate() != null) {
+            existingBill.setDate(billDTO.getDate());
+        }
 
         if (billDTO.getTableId() != null) {
             Tables table = tablesRepository.findById(billDTO.getTableId())
@@ -128,6 +133,10 @@ public class BillService {
             existingBill.setPaid(billDTO.getPaid());
         }
 
+        if (billDTO.getGuests() != null) {
+            existingBill.setGuests(billDTO.getGuests());
+        }
+
         return billMapper.toBillDTO(billRepository.save(existingBill));
     }
 
@@ -136,8 +145,37 @@ public class BillService {
         Bill originalBill = billRepository.findById(billId)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
 
-        List<BillDTO> splitBills = new ArrayList<>();
+        if (originalBill.isPaid()) {
+            throw new IllegalArgumentException("A paid bill cannot be split.");
+        }
+        if (request.getSplits() == null || request.getSplits().size() < 2) {
+            throw new IllegalArgumentException("A split needs at least two bills.");
+        }
 
+        Map<UUID, Integer> allocated = new HashMap<>();
+        for (SplitDTO split : request.getSplits()) {
+            if (split.getProducts() == null || split.getProducts().isEmpty()) {
+                throw new IllegalArgumentException("Every split needs at least one product.");
+            }
+            for (ProductSplitDTO ps : split.getProducts()) {
+                if (ps.getQuantity() <= 0) {
+                    throw new IllegalArgumentException("Quantity must be greater than zero.");
+                }
+                allocated.merge(ps.getProductId(), ps.getQuantity(), Integer::sum);
+            }
+        }
+
+        for (BillProduct line : originalBill.getBillProducts()) {
+            Integer quantity = allocated.remove(line.getProduct().getId());
+            if (quantity == null || quantity != line.getQuantity()) {
+                throw new IllegalArgumentException("The splits must add up to the original bill.");
+            }
+        }
+        if (!allocated.isEmpty()) {
+            throw new ProductNotFoundException("Product not found in bill");
+        }
+
+        List<Bill> newBills = new ArrayList<>();
         for (SplitDTO split : request.getSplits()) {
             Bill newBill = new Bill();
             newBill.setTable(originalBill.getTable());
@@ -163,14 +201,28 @@ public class BillService {
 
             newBill.setBillProducts(splitProducts);
             newBill.setAmount(amount);
-            newBill.setCreatedAt(LocalDateTime.now());
-            newBill.setDate(LocalDate.now());
+            newBill.setCreatedAt(originalBill.getCreatedAt());
+            newBill.setDate(originalBill.getDate());
             newBill.setPaid(false);
-
-            Bill savedBill = billRepository.save(newBill);
-            splitBills.add(billMapper.toBillDTO(savedBill));
+            newBills.add(newBill);
         }
 
+        Integer guests = originalBill.getGuests();
+        if (guests != null) {
+            int share = guests / newBills.size();
+            int remainder = guests % newBills.size();
+            for (int i = 0; i < newBills.size(); i++) {
+                newBills.get(i).setGuests(share + (i < remainder ? 1 : 0));
+            }
+        }
+
+        billRepository.delete(originalBill);
+        billRepository.flush();
+
+        List<BillDTO> splitBills = new ArrayList<>();
+        for (Bill newBill : newBills) {
+            splitBills.add(billMapper.toBillDTO(billRepository.save(newBill)));
+        }
         return splitBills;
     }
 
@@ -179,7 +231,7 @@ public class BillService {
         Bill bill = billRepository.findById(id)
             .orElseThrow(() -> new BillNotFoundException("Bill not found."));
         bill.setPaid(true);
-        bill.setUpdatedAt(LocalDateTime.now());
+        bill.setUpdatedAt(OffsetDateTime.now());
         return billMapper.toBillDTO(billRepository.save(bill));
     }
 

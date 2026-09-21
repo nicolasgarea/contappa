@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public class TablesDTO {
     private int number;
+    private String name;
+    private int capacity;
     private UUID id;
     private List<BillDTO> activeBills;
 
@@ -24,6 +26,22 @@ public class TablesDTO {
 
     public int getNumber() {
         return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public void setNumber(int number) {

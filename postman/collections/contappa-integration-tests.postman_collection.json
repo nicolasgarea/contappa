@@ -850,6 +850,16 @@
 									"        pm.expect(bill.products).to.be.an(\"array\");",
 									"        pm.expect(bill.products.length).to.be.above(0);",
 									"    });",
+									"});",
+									"",
+									"pm.test(\"Split replaces the original bill\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.length).to.eql(2);",
+									"    jsonData.forEach((bill) => {",
+									"        pm.expect(bill.id).to.not.eql(pm.environment.get(\"bill_id\"));",
+									"    });",
+									"    pm.environment.set(\"split_bill_1_id\", jsonData[0].id);",
+									"    pm.environment.set(\"split_bill_2_id\", jsonData[1].id);",
 									"});"
 								],
 								"type": "text/javascript",
@@ -917,7 +927,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{bill_id}}",
+							"raw": "{{base_url}}/tables/{{table_id}}/bills/{{split_bill_1_id}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -925,7 +935,7 @@
 								"tables",
 								"{{table_id}}",
 								"bills",
-								"{{bill_id}}"
+								"{{split_bill_1_id}}"
 							]
 						}
 					},

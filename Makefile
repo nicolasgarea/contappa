@@ -4,7 +4,7 @@ db_up:
 	docker compose -f docker/docker-compose.yml up -d db
 
 db_down:
-	docker compose -f docker/docker-compose.yml rm -sf db
+	docker compose -f docker/docker-compose.yml rm -svf db
 
 db_reload: db_down db_up
 

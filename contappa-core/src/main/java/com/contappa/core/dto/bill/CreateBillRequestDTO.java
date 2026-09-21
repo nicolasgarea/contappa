@@ -9,6 +9,7 @@ public class CreateBillRequestDTO {
     private BigDecimal amount;
     private LocalDate date;
     private UUID tableId;
+    private Integer guests;
     private Boolean paid;
     private List<ProductQuantity> products;
 
@@ -71,5 +72,13 @@ public class CreateBillRequestDTO {
         public void setQuantity(int quantity) {
             this.quantity = quantity;
         }
+    }
+
+    public Integer getGuests() {
+        return guests;
+    }
+
+    public void setGuests(Integer guests) {
+        this.guests = guests;
     }
 }

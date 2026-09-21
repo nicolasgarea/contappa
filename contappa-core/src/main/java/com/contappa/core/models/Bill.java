@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,11 +30,14 @@ public class Bill {
     @Column(name = "paid")
     private boolean paid;
 
+    @Column(name = "guests")
+    private Integer guests;
+
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "table_id", referencedColumnName = "id")
@@ -56,7 +59,7 @@ public class Bill {
         this.paid = paid;
     }
 
-    public Bill(BigDecimal amount, LocalDate date, String status, LocalDateTime createdAt, LocalDateTime updatedAt, Tables table) {
+    public Bill(BigDecimal amount, LocalDate date, String status, OffsetDateTime createdAt, OffsetDateTime updatedAt, Tables table) {
         this.amount = amount;
         this.date = date;
         this.status = status;
@@ -97,19 +100,19 @@ public class Bill {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -124,5 +127,12 @@ public class Bill {
     public List<BillProduct> getBillProducts() { return billProducts; }
 
     public void setBillProducts(List<BillProduct> billProducts) { this.billProducts = billProducts; }
-}
 
+    public Integer getGuests() {
+        return guests;
+    }
+
+    public void setGuests(Integer guests) {
+        this.guests = guests;
+    }
+}

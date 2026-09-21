@@ -317,6 +317,99 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  "/tables/{tableId}/bills/{billId}/pay":
+    parameters:
+      - $ref: "#/components/parameters/tableId"
+      - $ref: "#/components/parameters/billId"
+    post:
+      summary: Mark a bill as paid
+      operationId: payBill
+      responses:
+        "200":
+          description: Bill marked as paid
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bill"
+        "404":
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/reports/daily":
+    get:
+      summary: Sales report for one day
+      operationId: getDailyReport
+      parameters:
+        - name: date
+          in: query
+          required: false
+          description: Day to report on. Defaults to today in the requested zone.
+          schema:
+            type: string
+            format: date
+        - name: zone
+          in: query
+          required: false
+          description: IANA time zone used to bound the day and bucket the hours.
+          schema:
+            type: string
+            example: Europe/Madrid
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyReport"
+        "400":
+          description: Unknown time zone
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/reports/products/{productId}":
+    get:
+      summary: Sales figures for one product
+      operationId: getProductReport
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductReport"
+        "404":
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   "/categories":
     post:
       summary: Create a category
@@ -374,6 +467,28 @@ paths:
   "/categories/{categoryId}":
     parameters:
       - $ref: "#/components/parameters/categoryId"
+    get:
+      summary: Get a category by id
+      operationId: getCategoryById
+      responses:
+        "200":
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
     patch:
       summary: Update category
       operationId: updateCategory
@@ -590,6 +705,77 @@ components:
       schema:
         type: string
   schemas:
+    ProductReport:
+      type: object
+      properties:
+        productId:
+          type: string
+        unitsSold:
+          type: integer
+        revenue:
+          type: number
+        billsSold:
+          type: integer
+        lastSoldAt:
+          type: string
+          format: date-time
+          nullable: true
+        unitsOpen:
+          type: integer
+        tablesOpen:
+          type: integer
+    DailyReport:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        revenue:
+          type: number
+        openAmount:
+          type: number
+        billsPaid:
+          type: integer
+        billsOpen:
+          type: integer
+        guestsServed:
+          type: integer
+        averageTicket:
+          type: number
+        hourly:
+          type: array
+          items:
+            type: object
+            properties:
+              hour:
+                type: integer
+              revenue:
+                type: number
+              bills:
+                type: integer
+        topProducts:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              imageUrl:
+                type: string
+                nullable: true
+              quantity:
+                type: integer
+              revenue:
+                type: number
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              revenue:
+                type: number
     Table:
       type: object
       properties:
@@ -597,36 +783,24 @@ components:
           type: string
         number:
           type: integer
+        name:
+          type: string
+          nullable: true
+        capacity:
+          type: integer
         activeBills:
           type: array
           nullable: true
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              amount:
-                type: number
-              paid:
-                type: boolean
-              date:
-                type: string
-                format: date
-              tableId:
-                type: string
-              products:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    productId:
-                      type: string
-                    quantity:
-                      type: integer
+            $ref: "#/components/schemas/Bill"
     CreateTableRequest:
       type: object
       properties:
         number:
+          type: integer
+        name:
+          type: string
+        capacity:
           type: integer
       required:
         - number
@@ -634,6 +808,10 @@ components:
       type: object
       properties:
         number:
+          type: integer
+        name:
+          type: string
+        capacity:
           type: integer
     Bill:
       type: object
@@ -649,6 +827,17 @@ components:
           type: string
         paid:
           type: boolean
+        guests:
+          type: integer
+          nullable: true
+        openedAt:
+          type: string
+          format: date-time
+          nullable: true
+        lastOrderAt:
+          type: string
+          format: date-time
+          nullable: true
         products:
           type: array
           items:
@@ -656,8 +845,12 @@ components:
             properties:
               productId:
                 type: string
+              name:
+                type: string
               quantity:
                 type: integer
+              unitPrice:
+                type: number
     CreateBillRequest:
       type: object
       properties:
@@ -666,6 +859,8 @@ components:
         date:
           type: string
           format: date
+        guests:
+          type: integer
         tableId:
           type: string
         products:
@@ -694,6 +889,9 @@ components:
           type: string
         paid:
           type: boolean
+        guests:
+          type: integer
+          nullable: true
         products:
           type: array
           items:
@@ -757,6 +955,8 @@ components:
           type: string
         price:
           type: number
+        categoryId:
+          type: string
         imageUrl:
           type: string
     CreateProductRequest:

@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class TablesService {
+    private static final int DEFAULT_CAPACITY = 4;
+
 
     private final TablesRepository tablesRepository;
     private final TablesMapper tablesMapper;
@@ -36,6 +38,9 @@ public class TablesService {
 
     public TablesDTO create(CreateTableRequestDTO dto) {
         Tables table = tablesMapper.toTables(dto);
+        if (dto.getCapacity() == null || dto.getCapacity() < 1) {
+            table.setCapacity(DEFAULT_CAPACITY);
+        }
         Tables saved = tablesRepository.save(table);
         return mapWithActiveBills(saved);
     }
@@ -56,7 +61,16 @@ public class TablesService {
         Tables existing = tablesRepository.findById(id)
             .orElseThrow(() -> new TableNotFoundException("Table not found with id: " + id));
 
-        existing.setNumber(dto.getNumber());
+        if (dto.getNumber() != null) {
+            existing.setNumber(dto.getNumber());
+        }
+        if (dto.getName() != null) {
+            existing.setName(dto.getName());
+        }
+        if (dto.getCapacity() != null) {
+            existing.setCapacity(dto.getCapacity());
+        }
+
         Tables saved = tablesRepository.save(existing);
         return mapWithActiveBills(saved);
     }

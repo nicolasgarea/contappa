@@ -5,6 +5,7 @@ import com.contappa.core.dto.product.ProductDTO;
 import com.contappa.core.dto.product.UpdateProductRequestDTO;
 import com.contappa.core.mappers.ProductMapper;
 import com.contappa.core.models.Product;
+import com.contappa.core.repositories.CategoryRepository;
 import com.contappa.core.repositories.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,8 @@ public class ProductServiceTest {
     public void testCreate(){
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
-        ProductService productService = new ProductService(productRepository, productMapper);
+        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        ProductService productService = new ProductService(productRepository, categoryRepository, productMapper);
 
         CreateProductRequestDTO createDTO = new CreateProductRequestDTO();
         createDTO.setName("productName");
@@ -48,7 +50,8 @@ public class ProductServiceTest {
     public void testFindById(){
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
-        ProductService productService = new ProductService(productRepository, productMapper);
+        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        ProductService productService = new ProductService(productRepository, categoryRepository, productMapper);
 
         String idString = "123e4567-e89b-12d3-a456-426614174000";
         UUID id = UUID.fromString(idString);
@@ -67,7 +70,8 @@ public class ProductServiceTest {
     public void testListAllProducts(){
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
-        ProductService productService = new ProductService(productRepository, productMapper);
+        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        ProductService productService = new ProductService(productRepository, categoryRepository, productMapper);
 
         Product product = Mockito.mock(Product.class);
         ProductDTO productDTO = new ProductDTO();
@@ -88,7 +92,8 @@ public class ProductServiceTest {
     public void testUpdate(){
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
-        ProductService productService = new ProductService(productRepository, productMapper);
+        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        ProductService productService = new ProductService(productRepository, categoryRepository, productMapper);
 
         UUID id = UUID.randomUUID();
         UpdateProductRequestDTO updateDTO = new UpdateProductRequestDTO();
@@ -97,30 +102,31 @@ public class ProductServiceTest {
 
         Product existingProduct = new Product();
         existingProduct.setId(id);
-
-        Product updatedProduct = new Product();
-        updatedProduct.setId(id);
-        updatedProduct.setName(updateDTO.getName());
-        updatedProduct.setPrice(updateDTO.getPrice());
+        existingProduct.setName("originalProductName");
+        existingProduct.setPrice(BigDecimal.valueOf(100));
+        existingProduct.setImageUrl("original.png");
 
         ProductDTO returnedDTO = new ProductDTO();
         returnedDTO.setId(id);
 
         Mockito.when(productRepository.findById(id)).thenReturn(Optional.of(existingProduct));
-        Mockito.when(productMapper.toProduct(updateDTO)).thenReturn(updatedProduct);
-        Mockito.when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);
-        Mockito.when(productMapper.toProductDTO(updatedProduct)).thenReturn(returnedDTO);
+        Mockito.when(productRepository.save(existingProduct)).thenReturn(existingProduct);
+        Mockito.when(productMapper.toProductDTO(existingProduct)).thenReturn(returnedDTO);
 
         ProductDTO result = productService.update(id, updateDTO);
 
         Assertions.assertEquals(id, result.getId());
+        assertEquals("updatedProductName", existingProduct.getName());
+        assertEquals(BigDecimal.valueOf(150), existingProduct.getPrice());
+        assertEquals("original.png", existingProduct.getImageUrl());
     }
 
     @Test
     public void testDelete(){
         ProductRepository productRepository = Mockito.mock(ProductRepository.class);
         ProductMapper productMapper = Mockito.mock(ProductMapper.class);
-        ProductService productService = new ProductService(productRepository, productMapper);
+        CategoryRepository categoryRepository = Mockito.mock(CategoryRepository.class);
+        ProductService productService = new ProductService(productRepository, categoryRepository, productMapper);
 
         UUID id = UUID.randomUUID();
         Product product = new Product();

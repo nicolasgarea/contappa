@@ -111,6 +111,10 @@ public class TablesServiceTest {
 
         Tables table = new Tables();
         table.setId(id);
+        table.setNumber(3);
+        table.setName("Terrace 2");
+        table.setCapacity(6);
+
         Tables tableSaved = new Tables();
         tableSaved.setId(id);
 
@@ -124,6 +128,9 @@ public class TablesServiceTest {
         TablesDTO result = tablesService.update(id, updateDTO);
 
         Assertions.assertEquals(tableDTO, result);
+        Assertions.assertEquals(10, table.getNumber());
+        Assertions.assertEquals("Terrace 2", table.getName());
+        Assertions.assertEquals(6, table.getCapacity());
     }
 
     @Test

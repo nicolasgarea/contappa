@@ -3,9 +3,12 @@ package com.contappa.core.services;
 import com.contappa.core.dto.product.CreateProductRequestDTO;
 import com.contappa.core.dto.product.ProductDTO;
 import com.contappa.core.dto.product.UpdateProductRequestDTO;
+import com.contappa.core.exceptions.CategoryNotFoundException;
 import com.contappa.core.exceptions.ProductNotFoundException;
 import com.contappa.core.mappers.ProductMapper;
+import com.contappa.core.models.Category;
 import com.contappa.core.models.Product;
+import com.contappa.core.repositories.CategoryRepository;
 import com.contappa.core.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
         this.productMapper = productMapper;
     }
 
@@ -43,10 +48,22 @@ public class ProductService {
     public ProductDTO update(UUID id, UpdateProductRequestDTO productDTO) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
 
-        Product updatedProduct = productMapper.toProduct(productDTO);
-        updatedProduct.setId(existingProduct.getId());
+        if (productDTO.getName() != null) {
+            existingProduct.setName(productDTO.getName());
+        }
+        if (productDTO.getPrice() != null) {
+            existingProduct.setPrice(productDTO.getPrice());
+        }
+        if (productDTO.getImageUrl() != null) {
+            existingProduct.setImageUrl(productDTO.getImageUrl());
+        }
+        if (productDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + productDTO.getCategoryId()));
+            existingProduct.setCategory(category);
+        }
 
-        Product savedProduct = productRepository.save(updatedProduct);
+        Product savedProduct = productRepository.save(existingProduct);
         return productMapper.toProductDTO(savedProduct);
     }
 

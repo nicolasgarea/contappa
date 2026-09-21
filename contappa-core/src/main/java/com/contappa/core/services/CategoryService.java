@@ -46,8 +46,12 @@ public class CategoryService {
         Category existing = categoryRepository.findById(id)
             .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + id));
 
-        existing.setName(dto.getName());
-        existing.setDescription(dto.getDescription());
+        if (dto.getName() != null) {
+            existing.setName(dto.getName());
+        }
+        if (dto.getDescription() != null) {
+            existing.setDescription(dto.getDescription());
+        }
 
         Category saved = categoryRepository.save(existing);
         return categoryMapper.toCategoryDTO(saved);

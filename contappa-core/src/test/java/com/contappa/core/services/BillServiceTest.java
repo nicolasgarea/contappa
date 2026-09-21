@@ -186,6 +186,46 @@ public class BillServiceTest {
         Assertions.assertEquals(2, result.size());
         Assertions.assertTrue(result.contains(dto1));
         Assertions.assertTrue(result.contains(dto2));
+        Mockito.verify(billRepository).delete(originalBill);
+    }
+
+    @Test
+    public void testSplitBillRejectsSplitsThatDoNotAddUp() {
+        BillRepository billRepository = Mockito.mock(BillRepository.class);
+        BillMapper billMapper = Mockito.mock(BillMapper.class);
+        TablesRepository tablesRepository = Mockito.mock(TablesRepository.class);
+        ProductRepository productRepository = Mockito.mock(ProductRepository.class);
+        BillService billService = new BillService(billRepository, tablesRepository, productRepository, billMapper);
+
+        UUID billId = UUID.randomUUID();
+        UUID productId = UUID.randomUUID();
+
+        Product product = new Product();
+        product.setId(productId);
+        product.setPrice(BigDecimal.TEN);
+
+        BillProduct line = new BillProduct();
+        line.setProduct(product);
+        line.setQuantity(3);
+        line.setUnitPrice(product.getPrice());
+
+        Bill originalBill = new Bill();
+        originalBill.setId(billId);
+        originalBill.setBillProducts(List.of(line));
+        originalBill.setTable(new Tables());
+
+        SplitBillRequestDTO splitRequest = new SplitBillRequestDTO(List.of(
+            new SplitDTO(List.of(new ProductSplitDTO(productId, 1))),
+            new SplitDTO(List.of(new ProductSplitDTO(productId, 1)))
+        ));
+
+        Mockito.when(billRepository.findById(billId)).thenReturn(Optional.of(originalBill));
+
+        Assertions.assertThrows(
+            IllegalArgumentException.class,
+            () -> billService.splitBill(billId, splitRequest));
+        Mockito.verify(billRepository, Mockito.never()).delete(Mockito.any(Bill.class));
+        Mockito.verify(billRepository, Mockito.never()).save(Mockito.any(Bill.class));
     }
 
     @Test

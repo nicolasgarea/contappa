@@ -15,6 +15,8 @@ Table products {
 Table tables {
     id uuid [pk]
     number int [not null]
+    name varchar
+    capacity int [not null, default: 4]
 }
 
 Table bills {
@@ -23,8 +25,10 @@ Table bills {
     amount numeric(10,2) [not null]
     date date [not null]
     status varchar [default: 'open']
-    created_at datetime [default: `CURRENT_TIMESTAMP`]
-    updated_at datetime [default: `CURRENT_TIMESTAMP`]
+    paid boolean [not null, default: false]
+    guests int
+    created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+    updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
 }
 
 Table bill_items {
@@ -32,8 +36,8 @@ Table bill_items {
     product_id uuid [ref: > products.id]
     quantity int [not null]
     unit_price numeric(10,2) [not null]
-    created_at datetime [default: `CURRENT_TIMESTAMP`]
-    updated_at datetime [default: `CURRENT_TIMESTAMP`]
+    created_at timestamptz [default: `CURRENT_TIMESTAMP`]
+    updated_at timestamptz [default: `CURRENT_TIMESTAMP`]
     indexes {
         (bill_id, product_id) [pk]
     }

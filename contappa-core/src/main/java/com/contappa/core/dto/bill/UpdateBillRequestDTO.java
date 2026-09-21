@@ -11,6 +11,7 @@ public class UpdateBillRequestDTO {
     private LocalDate date;
     private UUID tableId;
     private Boolean paid;
+    private Integer guests;
     private List<UpdateBillRequestDTO.ProductQuantity> products;
 
     public Boolean getPaid() {
@@ -51,6 +52,14 @@ public class UpdateBillRequestDTO {
 
     public void setProducts(List<UpdateBillRequestDTO.ProductQuantity> products) {
         this.products = products;
+    }
+
+    public Integer getGuests() {
+        return guests;
+    }
+
+    public void setGuests(Integer guests) {
+        this.guests = guests;
     }
 
     public static class ProductQuantity {

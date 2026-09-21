@@ -1,72 +1,81 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query"
 import { CreateProductRequest, Product, UpdateProductRequest } from "@api/__generated__"
 import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "@api/client/services/products"
 import { ProductId, CategoryId } from "@api/types/aliases"
 
 interface UpdateProductInput {
+  categoryId: CategoryId
   productId: ProductId
-  productData: UpdateProductRequest;
+  productData: UpdateProductRequest
 }
 
+export const productsKey = (categoryId?: CategoryId) => ["categories", categoryId, "products"] as const
 
-export const useProducts = (categoryId?: string, options = {}) => {
+export const useProducts = (categoryId?: CategoryId) => {
+  return useQuery<Product[], Error>({
+    queryKey: productsKey(categoryId),
+    queryFn: () => getProducts(categoryId!),
+    enabled: !!categoryId,
+  })
+}
 
-  return useQuery(
-    ["products", categoryId],
-    () => getProducts(categoryId!),
-    {
-      ...options,
-      enabled: !!categoryId,
-    }
-  );
-};
+export const useProductsByCategories = (categoryIds: CategoryId[]) => {
+  const results = useQueries({
+    queries: categoryIds.map((categoryId) => ({
+      queryKey: productsKey(categoryId),
+      queryFn: () => getProducts(categoryId),
+    })),
+  })
 
+  return {
+    products: results.flatMap((result) => result.data ?? []),
+    isLoading: results.some((result) => result.isLoading),
+  }
+}
 
 export const useProductById = (categoryId: CategoryId, productId: ProductId) => {
   return useQuery<Product, Error>({
-    queryKey: ["categories", categoryId, "products", productId],
+    queryKey: [...productsKey(categoryId), productId],
     queryFn: () => getProductById(categoryId, productId),
-  });
+    enabled: !!categoryId && !!productId,
+  })
 }
 
 export const useCreateProduct = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   return useMutation(
-    (productData: CreateProductRequest & { categoryId: string }) =>
+    (productData: CreateProductRequest & { categoryId: CategoryId }) =>
       createProduct(productData.categoryId, productData),
     {
       onSuccess: (_, productData) => {
-        queryClient.invalidateQueries(["categories", productData.categoryId, "products"]);
+        queryClient.invalidateQueries(productsKey(productData.categoryId))
       },
     }
-  );
-};
+  )
+}
 
-export const useUpdateProduct = (categoryId: CategoryId) => {
-  const queryClient = useQueryClient();
+export const useUpdateProduct = () => {
+  const queryClient = useQueryClient()
   return useMutation(
-    ({ productId, productData }: UpdateProductInput) => updateProduct(categoryId, productId, productData),
+    ({ categoryId, productId, productData }: UpdateProductInput) =>
+      updateProduct(categoryId, productId, productData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["categories", categoryId, "products"]);
-      }
+        queryClient.invalidateQueries(["categories"])
+      },
     }
   )
 }
 
 export const useDeleteProduct = () => {
-  const queryClient = useQueryClient();
-
+  const queryClient = useQueryClient()
   return useMutation(
-    ({ categoryId, productId }: { categoryId: string; productId: string }) =>
+    ({ categoryId, productId }: { categoryId: CategoryId; productId: ProductId }) =>
       deleteProduct(categoryId, productId),
     {
       onSuccess: (_, variables) => {
-        queryClient.invalidateQueries(["categories", variables.categoryId, "products"]);
-      },
-      onError: (error: any) => {
-        console.error("Error deleting product:", error);
+        queryClient.invalidateQueries(productsKey(variables.categoryId))
       },
     }
-  );
-};
+  )
+}

@@ -6,9 +6,14 @@ export type Bill = {
     date?: string;
     tableId?: string;
     paid?: boolean;
+    guests?: (number) | null;
+    openedAt?: (string) | null;
+    lastOrderAt?: (string) | null;
     products?: Array<{
         productId?: string;
+        name?: string;
         quantity?: number;
+        unitPrice?: number;
     }>;
 };
 
@@ -21,6 +26,7 @@ export type Category = {
 export type CreateBillRequest = {
     amount: number;
     date: string;
+    guests?: number;
     tableId: string;
     products: Array<{
         productId?: string;
@@ -41,6 +47,33 @@ export type CreateProductRequest = {
 
 export type CreateTableRequest = {
     number: number;
+    name?: string;
+    capacity?: number;
+};
+
+export type DailyReport = {
+    date?: string;
+    revenue?: number;
+    openAmount?: number;
+    billsPaid?: number;
+    billsOpen?: number;
+    guestsServed?: number;
+    averageTicket?: number;
+    hourly?: Array<{
+        hour?: number;
+        revenue?: number;
+        bills?: number;
+    }>;
+    topProducts?: Array<{
+        name?: string;
+        imageUrl?: (string) | null;
+        quantity?: number;
+        revenue?: number;
+    }>;
+    categories?: Array<{
+        name?: string;
+        revenue?: number;
+    }>;
 };
 
 export type Error = {
@@ -57,11 +90,21 @@ export type ParameterproductId = string;
 export type ParametertableId = string;
 
 export type Product = {
-    categoryId: string | undefined;
     id?: string;
     name?: string;
     price?: number;
+    categoryId?: string;
     imageUrl?: string;
+};
+
+export type ProductReport = {
+    productId?: string;
+    unitsSold?: number;
+    revenue?: number;
+    billsSold?: number;
+    lastSoldAt?: (string) | null;
+    unitsOpen?: number;
+    tablesOpen?: number;
 };
 
 export type SplitBillRequest = {
@@ -76,17 +119,9 @@ export type SplitBillRequest = {
 export type Table = {
     id?: string;
     number?: number;
-    activeBills?: Array<{
-        id?: string;
-        amount?: number;
-        paid?: boolean;
-        date?: string;
-        tableId?: string;
-        products?: Array<{
-            productId?: string;
-            quantity?: number;
-        }>;
-    }> | null;
+    name?: (string) | null;
+    capacity?: number;
+    activeBills?: Array<Bill> | null;
 };
 
 export type UpdateBillRequest = {
@@ -94,6 +129,7 @@ export type UpdateBillRequest = {
     date?: string;
     tableId?: string;
     paid?: boolean;
+    guests?: (number) | null;
     products?: Array<{
         productId?: string;
         quantity?: number;
@@ -113,4 +149,6 @@ export type UpdateProductRequest = {
 
 export type UpdateTableRequest = {
     number?: number;
+    name?: string;
+    capacity?: number;
 };

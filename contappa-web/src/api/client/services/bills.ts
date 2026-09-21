@@ -7,6 +7,8 @@ const billsByIdEndpoint = (tableId: TableId, billId: BillId) =>
     `tables/${tableId}/bills/${billId}`;
 const splitBillEndpont = (tableId: TableId, billId: BillId) =>
     `tables/${tableId}/bills/${billId}/split`;
+const payBillEndpoint = (tableId: TableId, billId: BillId) =>
+    `tables/${tableId}/bills/${billId}/pay`;
 
 export const getBills = (tableId: TableId): Promise<Bill[]> =>
     client.get<Bill[]>(billsEndpoint(tableId)).then(response => response.data);
@@ -25,3 +27,6 @@ export const deleteBill = (tableId: TableId, billId: BillId): Promise<void> =>
 
 export const splitBill = (tableId: TableId, billId: BillId, splitData: SplitBillRequest): Promise<Bill[]> =>
     client.post<Bill[]>(splitBillEndpont(tableId, billId), splitData).then(response => response.data);
+
+export const payBill = (tableId: TableId, billId: BillId): Promise<Bill> =>
+    client.post<Bill>(payBillEndpoint(tableId, billId)).then(response => response.data);

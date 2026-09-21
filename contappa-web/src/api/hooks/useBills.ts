@@ -1,6 +1,6 @@
 import { CreateBillRequest, UpdateBillRequest, Bill, SplitBillRequest } from "@api/__generated__";
 import { BillId } from "@api/types/aliases";
-import { createBill, updateBill, deleteBill, getBills, getBillById, splitBill } from "@api/client/services/bills";
+import { createBill, updateBill, deleteBill, getBills, getBillById, splitBill, payBill } from "@api/client/services/bills";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { TableId } from "@api/types/aliases";
 
@@ -28,7 +28,9 @@ export const useCreateBill = (tableId: TableId) => {
     return useMutation(
         (billData: CreateBillRequest) => createBill(tableId, billData),
         {
-            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+            onSuccess: () => {
+                queryClient.invalidateQueries(["tables", tableId]);
+            },
         }
     );
 }
@@ -38,7 +40,9 @@ export const useUpdateBill = (tableId: TableId) => {
     return useMutation(
         ({ billId, billData }: UpdateBillInput) => updateBill(tableId, billId, billData),
         {
-            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+            onSuccess: () => {
+                queryClient.invalidateQueries(["tables", tableId]);
+            },
         }
     );
 }
@@ -48,7 +52,9 @@ export const useDeleteBill = (tableId: TableId) => {
     return useMutation(
         (billId: BillId) => deleteBill(tableId, billId),
         {
-            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+            onSuccess: () => {
+                queryClient.invalidateQueries(["tables", tableId]);
+            },
         }
     );
 }
@@ -58,7 +64,21 @@ export const useSplitBill = (tableId: TableId) => {
     return useMutation(
         ({ billId, splitData }: { billId: BillId; splitData: SplitBillRequest }) => splitBill(tableId, billId, splitData),
         {
-            onSuccess: () => queryClient.invalidateQueries(["tables", tableId, "bills"]),
+            onSuccess: () => {
+                queryClient.invalidateQueries(["tables", tableId]);
+            },
         }
     );
+}
+
+export const usePayBill = (tableId: TableId) => {
+    const queryClient = useQueryClient();
+    return useMutation(
+        (billId: BillId) => payBill(tableId, billId),
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["tables", tableId]);
+            }
+        }
+    )
 }

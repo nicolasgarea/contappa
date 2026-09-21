@@ -48,6 +48,9 @@
       ],
       "@styles/*": [
         "src/styles/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
       ]
     },
     /* Types */

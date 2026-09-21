@@ -1,0 +1,60 @@
+export function LogoMark({ size = 36 }: { size?: number }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 64 64"
+      width={size}
+      height={size}
+      fill="none"
+      role="img"
+      aria-label="Contappa"
+    >
+      <rect
+        width="64"
+        height="64"
+        rx="16"
+        fill="#FF7A00"
+      />
+      <g transform="translate(8 8)">
+        <path
+          d="M31.1 16.9A10 10 0 1 0 31.1 31.1"
+          stroke="#FFFFFF"
+          strokeWidth="8"
+          strokeLinecap="round"
+        />
+        <rect
+          x="17"
+          y="0.5"
+          width="14"
+          height="6.5"
+          rx="3.25"
+          fill="#FFFFFF"
+        />
+        <rect
+          x="17"
+          y="41"
+          width="14"
+          height="6.5"
+          rx="3.25"
+          fill="#FFFFFF"
+        />
+        <rect
+          x="0.5"
+          y="17"
+          width="6.5"
+          height="14"
+          rx="3.25"
+          fill="#FFFFFF"
+        />
+        <rect
+          x="39.5"
+          y="17"
+          width="6.5"
+          height="14"
+          rx="3.25"
+          fill="#14181F"
+        />
+      </g>
+    </svg>
+  )
+}

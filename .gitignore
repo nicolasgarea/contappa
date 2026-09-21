@@ -24,3 +24,13 @@ hs_err_pid*
 replay_pid*
 
 
+
+# Node / frontend build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Maven build output
+target/
+contappa-web/vite.config.js
+contappa-web/vite.config.d.ts

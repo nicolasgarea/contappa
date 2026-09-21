@@ -122,19 +122,18 @@ export default function TableDetailPage() {
   const [selectedBillId, setSelectedBillId] = useState<string | null>(null);
   const [showCreateBillForm, setShowCreateBillForm] = useState(false);
 
-  if (!id) return <div>Table ID not found</div>;
-
   const { data: table, refetch, isLoading, error } = useTableById(id);
   const bills = table?.activeBills || [];
   const selectedBill = selectedBillId ? bills.find(b => b.id === selectedBillId) : bills[0];
 
-  const deleteMutation = useDeleteBill(id);
-  const updateMutation = useUpdateBill(id);
-  const createMutation = useCreateBill(id);
+  const deleteMutation = useDeleteBill(id ?? "");
+  const updateMutation = useUpdateBill(id ?? "");
+  const createMutation = useCreateBill(id ?? "");
 
   const { register, handleSubmit, control, reset } = useForm<CreateBillRequest>();
   const { fields, append, remove } = useFieldArray({ control, name: "products" });
 
+  if (!id) return <div>Table ID not found</div>;
   if (isLoading) return <div>Loading table...</div>;
   if (error) return <div>Error loading table: {error.message}</div>;
   if (!table) return <div>Table not found</div>;

@@ -15,10 +15,11 @@ export const useTables = () => {
     });
 }
 
-export const useTableById = (tableId: TableId) => {
+export const useTableById = (tableId?: TableId) => {
     return useQuery<Table, Error>({
         queryKey: ["tables", tableId],
-        queryFn: () => getTableById(tableId),
+        queryFn: () => getTableById(tableId!),
+        enabled: !!tableId,
     })
 }
 

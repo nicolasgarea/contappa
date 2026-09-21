@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { useTables, useCreateTable, useDeleteTable, useUpdateTable } from "@api/hooks/useTables"
-import { CreateTableRequest, Table } from "@api/__generated__";
+import { useTables, useCreateTable } from "@api/hooks/useTables"
+import { CreateTableRequest } from "@api/__generated__";
 import styled from "styled-components";
 import Button from "@components/Button/Button";
 

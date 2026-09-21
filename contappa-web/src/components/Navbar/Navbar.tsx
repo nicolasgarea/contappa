@@ -3,7 +3,6 @@ import Item from './components/Items';
 import Title from './components/Title';
 import TableRestaurantIcon from '@mui/icons-material/TableRestaurant';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const NavbarContainer = styled.nav`
@@ -37,7 +36,6 @@ export default function Navbar() {
   const navItems = [
     { label: "Tables", icon: <TableRestaurantIcon />, path: "/tables" },
     { label: "Products", icon: <RestaurantIcon />, path: "/products" },
-    { label: "Bills", icon: <RequestQuoteIcon />, path: "/bills" },
   ];
 
   return (

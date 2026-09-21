@@ -1,122 +1,145 @@
-import { useForm, SubmitHandler } from "react-hook-form"
-import { useTables, useCreateTable } from "@api/hooks/useTables"
-import { CreateTableRequest } from "@api/__generated__";
-import styled from "styled-components";
-import Button from "@components/Button/Button";
+import { useForm, SubmitHandler } from 'react-hook-form'
+import styled from 'styled-components'
+import { useTables, useCreateTable, useUpdateTable } from '@api/hooks/useTables'
+import { CreateTableRequest } from '@api/__generated__'
+import Modal, { ModalActions } from '@components/ui/Modal'
+import Button from '@components/ui/Button'
+import Input, { Field, FieldError, Label, Select } from '@components/ui/Input'
 
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 6rem;
-  z-index: 1000;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  background-color: #fff;
-  width: 100%;
-  max-width: 300px;
-  font-family: sans-serif;
-
-  h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-    align-self: flex-start;
-  }
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  width: 100%;
-`;
-
-const ButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  justify-content: flex-end;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  flex: 1;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-
-  &:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 3px rgba(0,123,255,0.5);
-  }
-`;
+export type EditableTable = {
+  id: string
+  number: number
+  name: string
+  capacity: number
+}
 
 type TableFormProps = {
-  onClose?: () => void;
-};
+  table?: EditableTable
+  onClose: () => void
+}
 
-export default function TableForm({ onClose }: TableFormProps) {
-  const { register, handleSubmit, reset } = useForm<CreateTableRequest>()
+const Fields = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
 
-  const { data: tables, isLoading, error } = useTables();
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 
-  const createMutation = useCreateTable();
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+`
 
+const capacities = [2, 4, 6, 8, 10]
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>{error.message}</div>
+export default function TableForm({ table, onClose }: TableFormProps) {
+  const { data: tables = [] } = useTables()
+  const createMutation = useCreateTable()
+  const updateMutation = useUpdateTable()
+  const isEditing = !!table
+  const isWorking = createMutation.isLoading || updateMutation.isLoading
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<CreateTableRequest>({
+    defaultValues: table
+      ? { number: table.number, name: table.name, capacity: table.capacity }
+      : { capacity: 4 },
+  })
 
   const onSubmit: SubmitHandler<CreateTableRequest> = (data) => {
-
-    const table = tables.some((table) => table.number === data.number)
-
-    if (table) {
-      alert("A table with this number already exists");
-      return;
+    if (tables.some((other) => other.number === data.number && other.id !== table?.id)) {
+      setError('number', { message: 'A table with this number already exists' })
+      return
     }
 
-    createMutation.mutate(data, {
-      onSuccess: () => {
-        reset();
-        onClose?.();
-      }
-    });
-  };
+    if (table) {
+      updateMutation.mutate({ tableId: table.id, tableData: data }, { onSuccess: onClose })
+      return
+    }
+
+    createMutation.mutate(data, { onSuccess: onClose })
+  }
 
   return (
-    <Overlay>
-      <FormContainer onSubmit={handleSubmit(onSubmit)}  >
-        <h1>Create a new table</h1>
-        <Row>
-          <Input
-            type="number"
-            {...register("number", { required: true, min: 1, valueAsNumber: true })}
-            placeholder="Enter a table number"
-          />
-        </Row>
-        <ButtonRow>
-          <Button typeButton="button" label="Cancel" onClick={onClose} color="#E63F39" />
-          <Button typeButton="submit" label="Create table" color="#df8826ff" />
-        </ButtonRow>
-      </FormContainer>
-    </Overlay>
-  )
+    <Modal
+      title={isEditing ? 'Edit table' : 'New table'}
+      description="Give it a number, a name the floor recognises and how many it seats."
+      onClose={onClose}
+      width="520px"
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
+        <Fields>
+          <Field>
+            <Label htmlFor="table-name">Name</Label>
+            <Input
+              id="table-name"
+              placeholder="e.g. Terrace 2"
+              autoFocus
+              {...register('name')}
+            />
+          </Field>
 
+          <Row>
+            <Field>
+              <Label htmlFor="table-number">Number</Label>
+              <Input
+                id="table-number"
+                type="number"
+                min={1}
+                placeholder="e.g. 12"
+                {...register('number', {
+                  required: 'Table number is required',
+                  min: { value: 1, message: 'Must be 1 or higher' },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.number && <FieldError>{errors.number.message}</FieldError>}
+            </Field>
+
+            <Field>
+              <Label htmlFor="table-capacity">Seats</Label>
+              <Select
+                id="table-capacity"
+                {...register('capacity', { valueAsNumber: true })}
+              >
+                {capacities.map((seats) => (
+                  <option
+                    key={seats}
+                    value={seats}
+                  >
+                    {seats} seats
+                  </option>
+                ))}
+              </Select>
+            </Field>
+          </Row>
+        </Fields>
+
+        <ModalActions>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isWorking}
+          >
+            {isWorking ? 'Saving…' : isEditing ? 'Save changes' : 'Create table'}
+          </Button>
+        </ModalActions>
+      </form>
+    </Modal>
+  )
 }

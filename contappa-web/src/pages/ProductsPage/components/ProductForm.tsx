@@ -1,129 +1,142 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import styled from "styled-components";
-import Button from "@components/Button/Button";
-
-const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 5rem;
-  z-index: 1000;
-`;
-
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-  border-radius: 12px;
-  background-color: #fff;
-  width: 100%;
-  max-width: 350px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  font-family: 'Segoe UI', sans-serif;
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  font-size: 1.5rem;
-  text-align: center;
-  color: #333;
-`;
-
-const Input = styled.input`
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
-  &:focus {
-    outline: none;
-    border-color: #df8826;
-    box-shadow: 0 0 4px rgba(223, 136, 38, 0.5);
-  }
-`;
-
-const Select = styled.select`
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
-  background-color: #f9f9f9;
-  cursor: not-allowed;
-`;
-
-const Actions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-`;
+import { useForm, SubmitHandler } from 'react-hook-form'
+import styled from 'styled-components'
+import Modal, { ModalActions } from '@components/ui/Modal'
+import Button from '@components/ui/Button'
+import Input, { Field, FieldError, Label, Select } from '@components/ui/Input'
 
 export type ProductFormInputs = {
-    name: string;
-    price: number;
-    imageUrl?: string;
-    categoryId: string;
-};
+  name: string
+  price: number
+  imageUrl?: string
+  categoryId: string
+}
 
 type ProductFormProps = {
-    onClose?: () => void;
-    onSubmit: (data: ProductFormInputs) => void;
-    categories: { id: string; name: string }[];
-    selectedCategoryId: string;
-};
+  onClose: () => void
+  onSubmit: (data: ProductFormInputs) => void
+  categories: { id: string; name: string }[]
+  selectedCategoryId: string
+  isSubmitting?: boolean
+}
+
+const Fields = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`
+
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 520px) {
+    grid-template-columns: 1fr;
+  }
+`
 
 export default function ProductForm({
-    onClose,
-    onSubmit,
-    categories,
-    selectedCategoryId,
+  onClose,
+  onSubmit,
+  categories,
+  selectedCategoryId,
+  isSubmitting = false,
 }: ProductFormProps) {
-    const { register, handleSubmit, reset } = useForm<ProductFormInputs>({
-        defaultValues: { categoryId: selectedCategoryId },
-    });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormInputs>({
+    defaultValues: { categoryId: selectedCategoryId },
+  })
 
-    const handleFormSubmit: SubmitHandler<ProductFormInputs> = (data) => {
-        if (!data.categoryId) {
-            console.error("No category selected");
-            return;
-        }
+  const handleFormSubmit: SubmitHandler<ProductFormInputs> = (data) => onSubmit(data)
 
-        onSubmit(data);
+  return (
+    <Modal
+      title="New product"
+      description="Add an item to the menu and make it available on every bill."
+      onClose={onClose}
+      width="520px"
+    >
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        noValidate
+      >
+        <Fields>
+          <Field>
+            <Label htmlFor="product-name">Name</Label>
+            <Input
+              id="product-name"
+              placeholder="e.g. Flat white"
+              autoFocus
+              {...register('name', { required: 'Name is required' })}
+            />
+            {errors.name && <FieldError>{errors.name.message}</FieldError>}
+          </Field>
 
-        reset({ categoryId: selectedCategoryId });
-        onClose?.();
-    };
+          <Row>
+            <Field>
+              <Label htmlFor="product-price">Price</Label>
+              <Input
+                id="product-price"
+                type="number"
+                step="0.01"
+                min={0}
+                placeholder="0.00"
+                {...register('price', {
+                  required: 'Price is required',
+                  min: { value: 0, message: 'Price cannot be negative' },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors.price && <FieldError>{errors.price.message}</FieldError>}
+            </Field>
 
-    const categoryName = categories.find(cat => cat.id === selectedCategoryId)?.name || "Unknown";
+            <Field>
+              <Label htmlFor="product-category">Category</Label>
+              <Select
+                id="product-category"
+                {...register('categoryId', { required: 'Pick a category' })}
+              >
+                {categories.map((category) => (
+                  <option
+                    key={category.id}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
+              {errors.categoryId && <FieldError>{errors.categoryId.message}</FieldError>}
+            </Field>
+          </Row>
 
-    return (
-        <Overlay>
-            <FormContainer onSubmit={handleSubmit(handleFormSubmit)}>
-                <Title>Create Product</Title>
+          <Field>
+            <Label htmlFor="product-image">Image URL</Label>
+            <Input
+              id="product-image"
+              placeholder="https://… (optional)"
+              {...register('imageUrl')}
+            />
+          </Field>
+        </Fields>
 
-                <Input {...register("name", { required: true })} placeholder="Product Name" />
-                <Input
-                    type="number"
-                    step="0.01"
-                    {...register("price", { required: true, valueAsNumber: true })}
-                    placeholder="Price"
-                />
-                <Input {...register("imageUrl")} placeholder="Image URL (optional)" />
-
-                <Select value={selectedCategoryId} disabled>
-                    <option value={selectedCategoryId}>{categoryName}</option>
-                </Select>
-
-                <Actions>
-                    <Button typeButton="button" label="Cancel" onClick={onClose} color="#E63F39" />
-                    <Button typeButton="submit" label="Create" color="#df8826ff" />
-                </Actions>
-            </FormContainer>
-        </Overlay>
-    );
+        <ModalActions>
+          <Button
+            variant="secondary"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Creating…' : 'Create product'}
+          </Button>
+        </ModalActions>
+      </form>
+    </Modal>
+  )
 }

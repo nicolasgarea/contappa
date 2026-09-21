@@ -1,14 +1,18 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@styles/global.css'
+import { QueryClientProvider } from '@tanstack/react-query'
 import App from './App.tsx'
 import queryClient from '@api/queryClient.ts'
-import { QueryClientProvider } from '@tanstack/react-query';
+import GlobalStyle from '@styles/GlobalStyle'
+import { ThemeModeProvider } from '@styles/ThemeMode'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <ThemeModeProvider>
+        <GlobalStyle />
+        <App />
+      </ThemeModeProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

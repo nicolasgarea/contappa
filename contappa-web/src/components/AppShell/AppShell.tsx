@@ -6,10 +6,7 @@ import TableRestaurantOutlinedIcon from '@mui/icons-material/TableRestaurantOutl
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined'
 import InsightsOutlinedIcon from '@mui/icons-material/InsightsOutlined'
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
 import { useTables } from '@api/hooks/useTables'
-import { useThemeMode } from '@styles/ThemeMode'
 import { LogoMark } from '@components/Brand/Logo'
 
 const Layout = styled.div`
@@ -28,7 +25,7 @@ const Rail = styled.aside`
   align-items: center;
   gap: 1.5rem;
   padding: 1.125rem 0 1rem;
-  background-color: ${({ theme }) => theme.color.surface};
+  background-color: ${({ theme }) => theme.color.canvas};
   border-right: 1px solid ${({ theme }) => theme.color.border};
   position: sticky;
   top: 0;
@@ -102,8 +99,8 @@ const NavItem = styled(NavLink)`
   }
 
   &.active {
-    background-color: ${({ theme }) => theme.color.accent.soft};
-    color: ${({ theme }) => theme.color.accent[600]};
+    color: ${({ theme }) => theme.color.text};
+    font-weight: 700;
   }
 
   @media (max-width: 900px) {
@@ -112,52 +109,11 @@ const NavItem = styled(NavLink)`
   }
 `
 
-const Dot = styled.span`
-  position: absolute;
-  top: 0.3125rem;
-  left: calc(50% + 0.375rem);
-  min-width: 1.0625rem;
-  height: 1.0625rem;
-  padding: 0 0.25rem;
-  display: grid;
-  place-items: center;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  background-color: ${({ theme }) => theme.color.accent[500]};
-  color: ${({ theme }) => theme.color.accent.ink};
-  border: 2px solid ${({ theme }) => theme.color.surface};
-  font-size: 0.625rem;
-  font-weight: 700;
-  line-height: 1;
+const Count = styled.span`
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.textSubtle};
   font-variant-numeric: tabular-nums;
-`
-
-const Spacer = styled.div`
-  flex: 1;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-`
-
-const ThemeButton = styled.button`
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: ${({ theme }) => theme.radius.md};
-  border: 1px solid ${({ theme }) => theme.color.border};
-  background-color: ${({ theme }) => theme.color.surface};
-  color: ${({ theme }) => theme.color.textMuted};
-  transition: all ${({ theme }) => theme.transition.fast};
-
-  svg {
-    font-size: 1.1875rem;
-  }
-
-  &:hover {
-    border-color: ${({ theme }) => theme.color.borderStrong};
-    color: ${({ theme }) => theme.color.text};
-  }
 `
 
 const Main = styled.main`
@@ -177,7 +133,6 @@ const items = [
 ]
 
 export default function AppShell({ children }: { children: ReactNode }) {
-  const { mode, toggle } = useThemeMode()
   const { data: tables } = useTables()
 
   const seated = useMemo(
@@ -203,21 +158,10 @@ export default function AppShell({ children }: { children: ReactNode }) {
             >
               {icon}
               {label}
-              {to === '/tables' && seated > 0 && <Dot>{seated}</Dot>}
+              {to === '/tables' && seated > 0 && <Count>{seated} seated</Count>}
             </NavItem>
           ))}
         </Nav>
-
-        <Spacer />
-
-        <ThemeButton
-          type="button"
-          onClick={toggle}
-          aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          title={mode === 'dark' ? 'Light mode' : 'Dark mode'}
-        >
-          {mode === 'dark' ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
-        </ThemeButton>
       </Rail>
       <Main>{children}</Main>
     </Layout>

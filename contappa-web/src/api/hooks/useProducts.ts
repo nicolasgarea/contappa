@@ -1,7 +1,13 @@
-import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query"
-import { CreateProductRequest, Product, UpdateProductRequest } from "@api/__generated__"
-import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "@api/client/services/products"
-import { ProductId, CategoryId } from "@api/types/aliases"
+import { useQuery, useQueries, useMutation, useQueryClient } from '@tanstack/react-query'
+import { CreateProductRequest, Product, UpdateProductRequest } from '@api/__generated__'
+import {
+  createProduct,
+  deleteProduct,
+  getProductById,
+  getProducts,
+  updateProduct,
+} from '@api/client/services/products'
+import { ProductId, CategoryId } from '@api/types/aliases'
 
 interface UpdateProductInput {
   categoryId: CategoryId
@@ -9,7 +15,8 @@ interface UpdateProductInput {
   productData: UpdateProductRequest
 }
 
-export const productsKey = (categoryId?: CategoryId) => ["categories", categoryId, "products"] as const
+export const productsKey = (categoryId?: CategoryId) =>
+  ['categories', categoryId, 'products'] as const
 
 export const useProducts = (categoryId?: CategoryId) => {
   return useQuery<Product[], Error>({
@@ -50,7 +57,7 @@ export const useCreateProduct = () => {
       onSuccess: (_, productData) => {
         queryClient.invalidateQueries(productsKey(productData.categoryId))
       },
-    }
+    },
   )
 }
 
@@ -61,9 +68,9 @@ export const useUpdateProduct = () => {
       updateProduct(categoryId, productId, productData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["categories"])
+        queryClient.invalidateQueries(['categories'])
       },
-    }
+    },
   )
 }
 
@@ -76,6 +83,6 @@ export const useDeleteProduct = () => {
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries(productsKey(variables.categoryId))
       },
-    }
+    },
   )
 }

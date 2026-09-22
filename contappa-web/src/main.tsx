@@ -4,15 +4,16 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import App from './App.tsx'
 import queryClient from '@api/queryClient.ts'
 import GlobalStyle from '@styles/GlobalStyle'
-import { ThemeModeProvider } from '@styles/ThemeMode'
+import { ThemeProvider } from 'styled-components'
+import theme from '@styles/theme'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeModeProvider>
+      <ThemeProvider theme={theme}>
         <GlobalStyle />
         <App />
-      </ThemeModeProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

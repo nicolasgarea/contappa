@@ -22,10 +22,10 @@ type Filter = 'all' | 'seated' | 'free' | 'late'
 const Stats = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 0.25rem 0 1.25rem;
   margin-bottom: 1.25rem;
-  background-color: ${({ theme }) => theme.color.surface};
-  border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
 
   @media (max-width: 800px) {
     grid-template-columns: repeat(2, 1fr);
@@ -36,12 +36,7 @@ const Stat = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
-  padding: 0.875rem 1.25rem;
-  border-right: 1px solid ${({ theme }) => theme.color.border};
-
-  &:last-child {
-    border-right: none;
-  }
+  min-width: 0;
 `
 
 const StatLabel = styled.span`
@@ -50,6 +45,7 @@ const StatLabel = styled.span`
 `
 
 const StatValue = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ theme }) => theme.font.size.xl};
   font-weight: 700;
   letter-spacing: -0.02em;

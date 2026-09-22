@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success' | 'ink'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'success'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 type StyledProps = {
@@ -51,9 +51,6 @@ const variants = {
     ${({ theme }) =>
       solid(theme.color.success.base, theme.color.success.ink, theme.color.success.hover)}
   `,
-  ink: css`
-    ${({ theme }) => solid(theme.color.ink, theme.color.inkText, theme.color.inkHover)}
-  `,
   secondary: css`
     background-color: ${({ theme }) => theme.color.surface};
     color: ${({ theme }) => theme.color.text};
@@ -89,6 +86,7 @@ const variants = {
 }
 
 const StyledButton = styled.button<StyledProps>`
+  font-family: ${({ theme }) => theme.font.heading};
   display: inline-flex;
   align-items: center;
   justify-content: center;

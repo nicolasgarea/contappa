@@ -71,9 +71,11 @@ const DayLabel = styled.span`
 
 const Kpis = styled.div`
   display: grid;
-  grid-template-columns: 1.5fr repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+  grid-template-columns: 1.6fr repeat(3, 1fr);
+  gap: 2rem;
+  padding: 0.5rem 0 1.75rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
 
   @media (max-width: 1100px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -94,19 +96,23 @@ const Panel = styled.section`
 `
 
 const KpiLabel = styled.span`
+  display: block;
   font-size: ${({ theme }) => theme.font.size.sm};
   color: ${({ theme }) => theme.color.textMuted};
 `
 
 const KpiValue = styled.span<{ $hero?: boolean }>`
+  font-family: ${({ theme }) => theme.font.heading};
+  display: block;
   margin-top: 0.25rem;
-  font-size: ${({ theme, $hero }) => ($hero ? '3rem' : theme.font.size['2xl'])};
+  font-size: ${({ theme, $hero }) => ($hero ? '3.5rem' : theme.font.size['2xl'])};
   font-weight: 700;
   letter-spacing: -0.035em;
   line-height: 1.1;
 `
 
 const KpiHint = styled.span`
+  display: block;
   margin-top: 0.375rem;
   font-size: ${({ theme }) => theme.font.size.sm};
   color: ${({ theme }) => theme.color.textSubtle};
@@ -208,6 +214,7 @@ const Fill = styled.div<{ $ratio: number }>`
 `
 
 const ProductFigures = styled.div`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -251,6 +258,7 @@ const CategoryBar = styled(Track)`
 `
 
 const CategoryFigures = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   text-align: right;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
@@ -355,19 +363,19 @@ export default function OverviewPage() {
       {header}
 
       <Kpis>
-        <Panel>
+        <div>
           <KpiLabel>Revenue</KpiLabel>
           <KpiValue $hero>{money(revenue)}</KpiValue>
           <KpiHint>
             from {report.billsPaid} settled {report.billsPaid === 1 ? 'bill' : 'bills'}
           </KpiHint>
-        </Panel>
-        <Panel>
+        </div>
+        <div>
           <KpiLabel>Average ticket</KpiLabel>
           <KpiValue>{money(report.averageTicket)}</KpiValue>
           <KpiHint>per settled bill</KpiHint>
-        </Panel>
-        <Panel>
+        </div>
+        <div>
           <KpiLabel>Guests served</KpiLabel>
           <KpiValue>{report.guestsServed}</KpiValue>
           <KpiHint>
@@ -375,8 +383,8 @@ export default function OverviewPage() {
               ? `${money(revenue / report.guestsServed)} per guest`
               : 'no guests yet'}
           </KpiHint>
-        </Panel>
-        <Panel>
+        </div>
+        <div>
           <KpiLabel>Busiest hour</KpiLabel>
           <KpiValue>{peak ? `${String(peak.hour).padStart(2, '0')}:00` : '—'}</KpiValue>
           <KpiHint>
@@ -384,7 +392,7 @@ export default function OverviewPage() {
               ? `${money(peak.revenue)} across ${peak.bills} ${peak.bills === 1 ? 'bill' : 'bills'}`
               : 'no sales yet'}
           </KpiHint>
-        </Panel>
+        </div>
       </Kpis>
 
       {report.billsPaid === 0 ? (

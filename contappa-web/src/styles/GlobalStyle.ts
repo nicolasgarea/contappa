@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
+    color-scheme: dark;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -27,8 +28,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4 {
+    font-family: ${({ theme }) => theme.font.heading};
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    line-height: 1.15;
   }
 
   button, input, select, textarea {
@@ -56,8 +58,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   ::selection {
-    background-color: ${({ theme }) => theme.color.accent.line};
-    color: ${({ theme }) => theme.color.text};
+    background-color: ${({ theme }) => theme.color.accent[500]};
+    color: ${({ theme }) => theme.color.accent.ink};
   }
 
   ::-webkit-scrollbar {

@@ -152,10 +152,11 @@ INSERT INTO bill_items (bill_id, product_id, quantity, unit_price) VALUES
 
 DO $$
 DECLARE
-  minutes_ago INT[] := ARRAY[
-    14, 22, 31, 38, 47, 55, 63, 71, 78, 86, 95, 104, 112, 118, 126, 133, 139, 146, 152, 158,
-    165, 171, 178, 186, 195, 207, 221, 236, 252, 270, 291, 315, 342, 371, 403, 438, 476, 517
+  minutes_after_open INT[] := ARRAY[
+    5, 18, 31, 44, 52, 67, 79, 88, 103, 115, 126, 140, 149, 161, 172, 184, 193, 205, 214, 226,
+    238, 247, 259, 271, 286, 298, 312, 327, 341, 356, 372, 389, 405, 424, 446, 471, 499, 530
   ];
+  service_open TIMESTAMPTZ := date_trunc('day', NOW()) + INTERVAL '13 hours';
   product_ids UUID[];
   table_ids UUID[];
   bill_id UUID;
@@ -169,9 +170,9 @@ BEGIN
   SELECT array_agg(id ORDER BY id) INTO product_ids FROM products;
   SELECT array_agg(id ORDER BY number) INTO table_ids FROM tables;
 
-  FOR i IN 1..array_length(minutes_ago, 1) LOOP
+  FOR i IN 1..array_length(minutes_after_open, 1) LOOP
     bill_id := gen_random_uuid();
-    opened := NOW() - make_interval(mins => minutes_ago[i]);
+    opened := service_open + make_interval(mins => minutes_after_open[i]);
     item_count := 2 + (i % 3);
     total := 0;
 
@@ -184,8 +185,8 @@ BEGIN
       'closed',
       TRUE,
       1 + (i % 4),
-      opened - INTERVAL '50 minutes',
-      opened
+      opened,
+      opened + INTERVAL '50 minutes'
     );
 
     FOR k IN 0..item_count - 1 LOOP
@@ -199,6 +200,6 @@ BEGIN
       total := total + price * quantity;
     END LOOP;
 
-    UPDATE bills SET amount = total, updated_at = opened WHERE id = bill_id;
+    UPDATE bills SET amount = total WHERE id = bill_id;
   END LOOP;
 END $$;

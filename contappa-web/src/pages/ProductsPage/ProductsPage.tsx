@@ -37,10 +37,10 @@ type Sort = { key: SortKey; direction: 'asc' | 'desc' }
 const Stats = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 0.25rem 0 1.25rem;
   margin-bottom: 1.25rem;
-  background-color: ${({ theme }) => theme.color.surface};
-  border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
 
   @media (max-width: 800px) {
     grid-template-columns: repeat(2, 1fr);
@@ -52,12 +52,6 @@ const Stat = styled.div`
   flex-direction: column;
   gap: 0.125rem;
   min-width: 0;
-  padding: 0.875rem 1.25rem;
-  border-right: 1px solid ${({ theme }) => theme.color.border};
-
-  &:last-child {
-    border-right: none;
-  }
 `
 
 const StatLabel = styled.span`
@@ -66,6 +60,7 @@ const StatLabel = styled.span`
 `
 
 const StatValue = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ theme }) => theme.font.size.xl};
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -151,10 +146,8 @@ const SortButton = styled.button<{ $active: boolean; $align?: 'right' }>`
   padding: 0.6875rem 1.25rem;
   border: none;
   background: none;
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: 600;
   color: ${({ theme, $active }) => ($active ? theme.color.text : theme.color.textMuted)};
 
   svg {
@@ -174,10 +167,8 @@ const SortButton = styled.button<{ $active: boolean; $align?: 'right' }>`
 const PlainHead = styled.span`
   display: block;
   padding: 0.6875rem 1.25rem;
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: 600;
   color: ${({ theme }) => theme.color.textMuted};
 `
 
@@ -609,7 +600,7 @@ export default function ProductsPage() {
                       Delete
                     </Button>
                     <Button
-                      variant="ink"
+                      variant="primary"
                       fullWidth
                       onClick={() => navigate(`/products/${selected.id}`)}
                     >

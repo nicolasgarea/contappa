@@ -30,6 +30,7 @@ const Surface = styled.div<{ $seated: boolean; $round: boolean }>`
 `
 
 const Label = styled.span<{ $seated: boolean; $size: number }>`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ $size }) => `${Math.round($size * 0.2)}px`};
   font-weight: 700;
   letter-spacing: -0.03em;

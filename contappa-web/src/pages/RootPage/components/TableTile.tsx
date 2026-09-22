@@ -32,12 +32,12 @@ const Tile = styled.button<{ $selected: boolean; $seated: boolean }>`
     $selected &&
     css`
       background-color: ${theme.color.surface};
-      border: 1px solid ${theme.color.accent[500]};
-      box-shadow: 0 0 0 3px ${theme.color.accent.line};
+      border: 1px solid ${theme.color.text};
+      box-shadow: inset 0 0 0 1px ${theme.color.text};
 
       &:hover {
-        border-color: ${theme.color.accent[500]};
-        box-shadow: 0 0 0 3px ${theme.color.accent.line};
+        border-color: ${theme.color.text};
+        box-shadow: inset 0 0 0 1px ${theme.color.text};
       }
     `}
 `
@@ -106,6 +106,7 @@ const Guests = styled.span`
 `
 
 const Amount = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ theme }) => theme.font.size.lg};
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -115,8 +116,6 @@ const Amount = styled.span`
 const FreeTag = styled.span`
   font-size: ${({ theme }) => theme.font.size.xs};
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: ${({ theme }) => theme.color.success.base};
 `
 

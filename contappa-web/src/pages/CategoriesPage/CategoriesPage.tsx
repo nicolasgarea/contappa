@@ -56,12 +56,12 @@ const Card = styled.button<{ $selected: boolean }>`
   ${({ theme, $selected }) =>
     $selected &&
     css`
-      border-color: ${theme.color.accent[500]};
-      box-shadow: 0 0 0 3px ${theme.color.accent.line};
+      border-color: ${theme.color.text};
+      box-shadow: inset 0 0 0 1px ${theme.color.text};
 
       &:hover {
-        border-color: ${theme.color.accent[500]};
-        box-shadow: 0 0 0 3px ${theme.color.accent.line};
+        border-color: ${theme.color.text};
+        box-shadow: inset 0 0 0 1px ${theme.color.text};
       }
     `}
 `
@@ -125,6 +125,7 @@ const CardNote = styled.span`
 `
 
 const CardCount = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -223,6 +224,7 @@ const Facts = styled.div`
 `
 
 const Fact = styled.div`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
@@ -302,6 +304,7 @@ const ItemName = styled.span`
 `
 
 const ItemPrice = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: ${({ theme }) => theme.color.textMuted};

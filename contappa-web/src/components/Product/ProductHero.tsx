@@ -73,14 +73,9 @@ const Heading = styled.div`
 `
 
 const Tag = styled.span`
-  padding: 0.1875rem 0.5625rem;
-  border-radius: ${({ theme }) => theme.radius.pill};
-  background-color: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(6px);
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: 600;
+  opacity: 0.85;
 `
 
 const Name = styled.h1`
@@ -92,6 +87,7 @@ const Name = styled.h1`
 `
 
 const Price = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   flex-shrink: 0;
   font-size: clamp(1.25rem, 2.6vw, 1.875rem);
   font-weight: 800;

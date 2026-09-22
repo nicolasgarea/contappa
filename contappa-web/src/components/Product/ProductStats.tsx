@@ -13,6 +13,7 @@ const Grid = styled.dl`
 `
 
 const Fact = styled.div`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   flex-direction: column;
   gap: 0.125rem;

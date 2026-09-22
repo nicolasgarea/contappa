@@ -75,6 +75,7 @@ const Tab = styled.button<{ $active: boolean }>`
 `
 
 const TabAmount = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   color: ${({ theme }) => theme.color.text};
   font-weight: 700;
   font-variant-numeric: tabular-nums;

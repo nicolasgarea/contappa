@@ -4,33 +4,35 @@ import type { ReactNode } from 'react'
 const ChipButton = styled.button<{ $active: boolean }>`
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4375rem 0.875rem;
-  border-radius: ${({ theme }) => theme.radius.pill};
+  gap: 0.375rem;
+  padding: 0.375rem 0.125rem;
+  border: none;
+  border-bottom: 2px solid ${({ theme, $active }) => ($active ? theme.color.text : 'transparent')};
+  background: none;
   font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: 600;
+  font-weight: ${({ $active }) => ($active ? 700 : 500)};
+  color: ${({ theme, $active }) => ($active ? theme.color.text : theme.color.textMuted)};
   white-space: nowrap;
-  transition: all ${({ theme }) => theme.transition.fast};
-
-  background-color: ${({ theme, $active }) => ($active ? theme.color.ink : theme.color.surface)};
-  color: ${({ theme, $active }) => ($active ? theme.color.inkText : theme.color.textMuted)};
-  border: 1px solid ${({ theme, $active }) => ($active ? theme.color.ink : theme.color.border)};
+  transition:
+    color ${({ theme }) => theme.transition.fast},
+    border-color ${({ theme }) => theme.transition.fast};
 
   &:hover {
-    border-color: ${({ theme, $active }) => ($active ? theme.color.ink : theme.color.borderStrong)};
-    color: ${({ theme, $active }) => ($active ? theme.color.inkText : theme.color.text)};
+    color: ${({ theme }) => theme.color.text};
   }
 `
 
 const Count = styled.span`
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.textSubtle};
   font-variant-numeric: tabular-nums;
-  opacity: 0.6;
 `
 
 export const ChipRow = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
+  border-bottom: 1px solid ${({ theme }) => theme.color.border};
 `
 
 type ChipProps = {

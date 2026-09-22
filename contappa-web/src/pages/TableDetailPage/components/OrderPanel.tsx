@@ -137,6 +137,7 @@ const LineName = styled.span`
 `
 
 const LineMath = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ theme }) => theme.font.size.sm};
   color: ${({ theme }) => theme.color.textMuted};
   font-weight: 500;
@@ -192,6 +193,7 @@ const StepButton = styled.button`
 `
 
 const Quantity = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   min-width: 22px;
   text-align: center;
   font-weight: 700;
@@ -225,6 +227,7 @@ const Totals = styled.div`
 `
 
 const Row = styled.div<{ $strong?: boolean }>`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -417,7 +420,7 @@ export default function OrderPanel({
         ) : (
           <>
             <Button
-              variant="ink"
+              variant="primary"
               size="lg"
               fullWidth
               disabled={!dirty || isSaving || paid}

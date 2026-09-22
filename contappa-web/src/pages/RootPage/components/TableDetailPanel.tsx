@@ -120,6 +120,7 @@ const FactLabel = styled.span`
 `
 
 const FactValue = styled.span<{ $tone?: 'danger' | 'warning' }>`
+  font-family: ${({ theme }) => theme.font.heading};
   font-size: ${({ theme }) => theme.font.size.base};
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -158,6 +159,7 @@ const Quantity = styled.span`
 `
 
 const ItemTotal = styled.span`
+  font-family: ${({ theme }) => theme.font.heading};
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 `
@@ -171,6 +173,7 @@ const Footer = styled.div`
 `
 
 const TotalRow = styled.div`
+  font-family: ${({ theme }) => theme.font.heading};
   display: flex;
   align-items: baseline;
   justify-content: space-between;

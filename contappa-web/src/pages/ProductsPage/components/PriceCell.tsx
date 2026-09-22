@@ -9,6 +9,7 @@ type PriceCellProps = {
 }
 
 const Display = styled.button`
+  font-family: ${({ theme }) => theme.font.heading};
   padding: 0.3125rem 0.5rem;
   margin: -0.3125rem -0.5rem;
   border: 1px solid transparent;
@@ -26,6 +27,7 @@ const Display = styled.button`
 `
 
 const Editor = styled.input`
+  font-family: ${({ theme }) => theme.font.heading};
   width: 6rem;
   padding: 0.3125rem 0.5rem;
   margin: -0.3125rem -0.5rem;
